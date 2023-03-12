@@ -24,11 +24,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 //import AccountCircle from '@mui/icons-material/AccountCircle';
-//import MailIcon from '@mui/icons-material/Mail';
-//import NotificationsIcon from '@mui/icons-material/Notifications';
-//import MoreIcon from '@mui/icons-material/MoreVert';
+import MailIcon from '@mui/icons-material/Mail';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import MoreIcon from '@mui/icons-material/MoreVert';
 
 import logo from "../../image/logo1.jpg";
+import { Button } from '@mui/material';
+import SignUP from '../signUP_signIn/SignIn';
+import SignIn from '../signUP_signIn/SignIn';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -82,6 +85,7 @@ function Navbaar() {
     //   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     //     setAnchorEl(event.currentTarget);
     //   };
+    
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
@@ -135,15 +139,15 @@ function Navbaar() {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            {/* <MenuItem>
+            <MenuItem>
                 <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                     <Badge badgeContent={4} color="error">
                         <MailIcon />
                     </Badge>
                 </IconButton>
                 <p>Messages</p>
-            </MenuItem> */}
-            {/* <MenuItem>
+            </MenuItem>
+            <MenuItem>
                 <IconButton
                     size="large"
                     aria-label="show 17 new notifications"
@@ -154,7 +158,7 @@ function Navbaar() {
                     </Badge>
                 </IconButton>
                 <p>Notifications</p>
-            </MenuItem> */}
+            </MenuItem>
             {/* onClick={handleProfileMenuOpen} */}
             <MenuItem >
                 <IconButton
@@ -214,10 +218,10 @@ function Navbaar() {
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </Search>
-                   
-                   
+
+
                     <Box sx={{ flexGrow: 1 }} />
-                   
+
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton
 
@@ -245,6 +249,9 @@ function Navbaar() {
                             <ShoppingCartIcon style={{ fontSize: 50 }} />
                         </IconButton>
                     </Box>
+                    
+                    <SignIn />
+                    
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                         {/* <IconButton
                             size="large"

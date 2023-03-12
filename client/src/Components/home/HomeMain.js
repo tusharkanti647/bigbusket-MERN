@@ -21,7 +21,7 @@ import Navbaar from "../header/Navbaar"
 import Footer from "../footer/Footer"
 import SixItemBar from "./SixItemBar"
 import BannerSlid from "./BannerSlid"
-import ProductCard from "./card/ProductCard"
+import ProductCard from "../card/ProductCard"
 
 const Beauty=["https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-makeup-splash_m_250223_01.jpg",
 "https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-summer-lotions_m_250223_02.jpg",
@@ -66,7 +66,7 @@ function HomeMain() {
         <SixItemBar header="Beauty & Hygiene" arr={Beauty}/>
 
         <BannerSlid />
-        <Footer />
+        
     </>)
 }
 export default HomeMain;
