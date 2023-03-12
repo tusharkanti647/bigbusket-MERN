@@ -1,0 +1,34 @@
+#topMeetBaner{
+    max-width: 100%;
+    height: auto;
+}
+
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.top-bar{
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 95%;
+    /* margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    width: 95%; */
+}
+.top-bar>img{
+    width: 150px;
+}
+
+/* .bank{
+    margin-top: 15px;
+    display: grid;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 95%;
+} */
+
+
