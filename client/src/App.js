@@ -7,6 +7,7 @@ import HomeMain from './Components/home/HomeMain';
 
 import { Routes, Route } from "react-router-dom";
 import SignUp from './Components/signUP_signIn/SignUp';
+import AboutProduct from './Components/productDetals/AboutProduct';
 
 const style = {
 
@@ -21,6 +22,7 @@ function App() {
   <Routes>
   <Route path='/' element={<HomeMain />}></Route>
   <Route path='/signup' element={<SignUp />}></Route>
+  <Route path='/aboutproduct/:id' element={<AboutProduct />}></Route>
   </Routes>
   <Footer />
   
