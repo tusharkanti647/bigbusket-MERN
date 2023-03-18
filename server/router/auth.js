@@ -69,8 +69,8 @@ router.post("/addproduct", (req, res) => {
     })
 })
 //product get path
-router.get("/addproduct",async (req, res)=>{
-    const data=await productModel.find();
+router.get("/addproduct", async (req, res) => {
+    const data = await productModel.find();
     res.send(data);
 })
 

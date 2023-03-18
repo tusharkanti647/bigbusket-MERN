@@ -29,15 +29,46 @@ function SignUp() {
     }
 
 
+    //signup data send to the server
+    //-------------------------------------------------------------------------
+    const signupUser = async (event) => {
+        event.preventDefault();
+        const { name, number, email, password, conPassword } = signUpData;
+
+        console.log("hello");
+        const respons = await fetch("http://localhost:8000/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, number, email, password, conPassword })
+        });
+
+        const data = await respons.json();
+        if (respons.status === 422 || !signUpData) {
+            alert("no data");
+        } else {
+            alert("user sucessfull signup");
+            setSignUpData({
+                ...signUpData, name: "",
+                number: "",
+                email: "",
+                password: "",
+                conPassword: ""
+            });
+        }
+    }
+
+
 
     return (<div className='login-modal'>
         <Box
             component="form"
+            method="POST"
+            onSubmit={signupUser}
             sx={{
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
             noValidate
-            autoComplete="off"
+            autoComplete="on"
         >
             <div className='login-modal'>
                 <h2>SignIn</h2>

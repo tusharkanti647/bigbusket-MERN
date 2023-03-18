@@ -3,11 +3,14 @@ const { default: mongoose } = require("mongoose");
 const usersSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true,
+        required: true,
+        trim: true, //left and right side of the name if have any spce it trimes
     },
     number: {
         type: String,
         require: true,
+        uniqued:true, // it creat the number is unique
+        maxlength:10, //it creat the length of the number only 10
     },
     email: {
         type: String,
@@ -15,12 +18,23 @@ const usersSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        require: true,
+        required: true,
+        minlength:6,
     },
     conPassword: {
         type: String,
-        require: true,
-    }
+        required: true,
+        minlength:6,
+    },
+    tokens:[
+        {
+            token:{
+            type:String,
+            required: true,
+            }
+        }
+    ],
+    cart:Array,
 });
 
 const userModel = mongoose.model("users", usersSchema);
