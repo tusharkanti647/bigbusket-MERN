@@ -22,17 +22,15 @@ function ProductCard() {
     let newProductData = [];
 
     if (productData.length > 5) {
-        console.log(productData.length);
         newProductData = [...productData]
         newProductData.splice(5);
-        console.log(newProductData.length);
     }
     return (
         <>
 
-            {newProductData.map((product) => {
+            {newProductData.map((product,ind) => {
                 return (
-                    <Card sx={{ maxWidth: 220, border: 'solid #888888 1px' }}>
+                    <Card key={ind} sx={{ maxWidth: 220, border: 'solid #888888 1px' }}>
                         <CardMedia
                             component="img"
                             alt="green iguana"

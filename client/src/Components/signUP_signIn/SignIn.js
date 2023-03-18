@@ -51,7 +51,35 @@ export default function SignIn() {
         setSignInData({ ...signInData, [name]: value });
     }
 
-  
+
+    //signin data send to the server
+    //-------------------------------------------------------------------------
+    const signinUser = async (event) => {
+        event.preventDefault();
+        const { email, password } = signInData;
+
+        
+        const respons = await fetch("http://localhost:8000/signin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await respons.json();
+        if (respons.status === 400 || !signInData) {
+            alert("no data");
+        } else {
+            alert("user sucessfull signin");
+            console.log(data);
+            setSignInData({
+                ...signInData,
+                email: "",
+                password: ""
+            });
+        }
+    }
+
+
 
     return (
         <div>
@@ -69,6 +97,8 @@ export default function SignIn() {
           </p> */}
                     <Box
                         component="form"
+                        method="POST"
+                        onSubmit={signinUser}
                         sx={{
                             '& .MuiTextField-root': { m: 1, width: '25ch' },
                         }}
@@ -81,7 +111,7 @@ export default function SignIn() {
                                 error={false}
                                 required
                                 name="email"
-                                id="outlined-required"
+                                id="outlined-required-email-data"
                                 label="Email"
                                 value={signInData.email}
                                 onChange={handelInput}
@@ -92,7 +122,7 @@ export default function SignIn() {
                                 required
                                 name="password"
                                 type="password"
-                                id="outlined-required"
+                                id="outlined-required-password-data"
                                 label="Password"
                                 value={signInData.password}
                                 onChange={handelInput}

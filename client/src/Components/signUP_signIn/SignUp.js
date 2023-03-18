@@ -77,7 +77,7 @@ function SignUp() {
                     error={false}
                     required
                     name="name"
-                    id="outlined-required"
+                    id="outlined-required-name"
                     label="Name"
                     value={signUpData.name}
                     onChange={handelInput}
@@ -87,7 +87,7 @@ function SignUp() {
                     required
                     name="number"
                     type="number"
-                    id="outlined-required"
+                    id="outlined-required-number"
                     label="Number"
                     value={signUpData.number}
                     onChange={handelInput}
@@ -96,7 +96,7 @@ function SignUp() {
                     error={false}
                     required
                     name="email"
-                    id="outlined-required"
+                    id="outlined-required-email"
                     label="Email"
                     value={signUpData.email}
                     onChange={handelInput}
@@ -106,7 +106,7 @@ function SignUp() {
                     required
                     name="password"
                     type="password"
-                    id="outlined-required"
+                    id="outlined-required-password"
                     label="Password"
                     value={signUpData.password}
                     onChange={handelInput}
@@ -116,7 +116,7 @@ function SignUp() {
                     required
                     name="conPassword"
                     type="password"
-                    id="outlined-required"
+                    id="outlined-required-conPassword"
                     label="Confrom Password"
                     value={signUpData.conPassword}
                     onChange={handelInput}

@@ -80,7 +80,7 @@ router.post("/signin", async (req, res) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            res.status(400).send("plices provide data");
+            res.status(400).jeson("plices provide data");
             return;
         }
 
@@ -91,7 +91,7 @@ router.post("/signin", async (req, res) => {
         }
 
         if (!bcrypt.compareSync(req.body.password, user.password)) {
-            res.send("password not match");
+            res.status(400).send("password not match");
             return;
         }
         res.status(200).send(user);
