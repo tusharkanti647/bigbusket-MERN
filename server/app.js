@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-
+const cors = require('cors');
 const mongoose = require("mongoose");
 
 const express = require("express");
@@ -13,8 +13,10 @@ require("./connection");
 
 const userModel = require("./model/schema");
 
+app.use(cors());
 //we can coonect the router file ushinh this middelwear
 app.use(require("./router/auth"));
+
 
 // app.get("/", (req, res) => {
 //     res.send("welcome my root page");

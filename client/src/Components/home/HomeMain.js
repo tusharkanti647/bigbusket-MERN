@@ -23,25 +23,41 @@ import SixItemBar from "./SixItemBar"
 import BannerSlid from "./BannerSlid"
 import ProductCard from "../card/ProductCard"
 
-const Beauty=["https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-makeup-splash_m_250223_01.jpg",
-"https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-summer-lotions_m_250223_02.jpg",
-"https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-scentful_m_250223_03.jpg",
-"https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-shaving_m_250223_04.jpg",
-"https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-min-30_m_250223_05.jpg",
-"https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-under-199_m_250223_06.jpg"]
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { fetchProductData } from "../../redux_toolkit/slices/getProduvtSlices"
+
+
+const Beauty = ["https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-makeup-splash_m_250223_01.jpg",
+    "https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-summer-lotions_m_250223_02.jpg",
+    "https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-scentful_m_250223_03.jpg",
+    "https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-shaving_m_250223_04.jpg",
+    "https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-min-30_m_250223_05.jpg",
+    "https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-under-199_m_250223_06.jpg"]
 function HomeMain() {
+
+
+
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchProductData());
+    }, [dispatch]);
+
+
+
     return (<>
-    
+
         <img src={topMeetBanner} alt="meet Offer" id="topMeetBaner" />
-        
-        
+
+
         <Box className="main">
-        <Box sx={{display:"flex", justifyContent:"space-between", width: "95%" }}>
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard /><ProductCard />
-        </Box>
+            <Box sx={{ display: "flex", justifyContent: "space-between", width: "95%" }}>
+                <ProductCard />
+                {/* <ProductCard />
+                <ProductCard />
+                <ProductCard /><ProductCard /> */}
+            </Box>
             <div className="top-bar">
                 <img src={ayurveda} alt="ayurveda" />
                 <img src={newPass} alt="newPass" />
@@ -63,10 +79,10 @@ function HomeMain() {
             </Grid>
         </Box>
 
-        <SixItemBar header="Beauty & Hygiene" arr={Beauty}/>
+        <SixItemBar header="Beauty & Hygiene" arr={Beauty} />
 
         <BannerSlid />
-        
+
     </>)
 }
 export default HomeMain;

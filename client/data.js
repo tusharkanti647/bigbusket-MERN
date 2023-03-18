@@ -1,6 +1,6 @@
 product=[
     {
-        Category:"fish",
+        category:"fish",
         oImg:"https://www.bigbasket.com/media/uploads/p/l/10000909_8-fresho-chicken-curry-cut-without-skin-antibiotic-residue-free.jpg",
         titel:"Fresho Chicken - Curry Cut Without Skin, Antibiotic Residue-Free, 6 To 9 Pcs, 250 g",
         price:[120,89],
@@ -13,7 +13,7 @@ product=[
         }
     },
     {
-        Category:"borges",
+        category:"borges",
         oImg:"https://www.bigbasket.com/media/uploads/p/l/40191534_1-borges-extra-virgin-olive-oil.jpg",
         titel:"BORGES Original Extra Virgin Olive Oil",
         price:[2700,1512],

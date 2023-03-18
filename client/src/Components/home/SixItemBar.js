@@ -3,7 +3,7 @@ import "./SixItemBar.css"
 
 
 function SixItemBar({ header, arr }) {
-    console.log(arr);
+    //console.log(arr);
     return (<Box className="main"  >
     <Box mt={5} sx={{ fontSize: 25 }}>{header}</Box>
     <div className="sixItem">
