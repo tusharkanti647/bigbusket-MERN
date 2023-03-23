@@ -1,4 +1,7 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+
+const secretKey = process.env.KEY;
 
 const usersSchema = new mongoose.Schema({
     name: {
@@ -9,8 +12,8 @@ const usersSchema = new mongoose.Schema({
     number: {
         type: String,
         require: true,
-        uniqued:true, // it creat the number is unique
-        maxlength:10, //it creat the length of the number only 10
+        uniqued: true, // it creat the number is unique
+        maxlength: 10, //it creat the length of the number only 10
     },
     email: {
         type: String,
@@ -19,22 +22,22 @@ const usersSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength:6,
+        minlength: 6,
     },
     conPassword: {
         type: String,
         required: true,
-        minlength:6,
+        minlength: 6,
     },
-    tokens:[
+    tokens: [
         {
-            token:{
-            type:String,
-            required: true,
+            token: {
+                type: String,
+                required: true,
             }
         }
     ],
-    cart:Array,
+    cart: Array,
 });
 
 const userModel = mongoose.model("users", usersSchema);
@@ -76,6 +79,20 @@ const productSchema = new mongoose.Schema({
     }
 
 });
+
+
+//jwt token generet
+usersSchema.methods.generateAuthToken = async function () {
+    console.log(this);
+    try {
+        let token = jwt.sign({ _id: this._id }, secretKey);
+        this.tokens = this.tokens.concat({ token: token });
+        await this.save();
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 
 const productModel = mongoose.model("products", productSchema);
 

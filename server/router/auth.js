@@ -4,8 +4,9 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-
 const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
+
 router.use(bodyParser.json());
 
 const { userModel, productModel } = require("../model/schema");
@@ -18,6 +19,12 @@ const { userModel, productModel } = require("../model/schema");
 
 //signUp root
 router.post("/signup", (req, res) => {
+    const { name, number, email, password, conPassword } = req.body;
+
+    if (!name || !number || !email || !password || !conPassword) {
+        res.status(400).jeson("plices provide data");
+        return;
+    }
     const user = new userModel({
         name: req.body.name,
         number: req.body.number,
@@ -25,13 +32,7 @@ router.post("/signup", (req, res) => {
         password: bcrypt.hashSync(req.body.password, 10),
         conPassword: bcrypt.hashSync(req.body.conPassword, 10),
     });
-    /*
-    console.log(bcrypt.compareSync(user.password, req.body.password));
-    console.log(user.password);
-    console.log(bcrypt.compareSync(user.password, req.body.conPassword));
-    console.log("-------------------------");
-    console.log(bcrypt.compareSync(req.body.password, req.body.conPassword));
-    */
+
     user.save().then(() => {
         res.send({
             status: true,
@@ -72,9 +73,35 @@ router.post("/addproduct", (req, res) => {
 router.get("/addproduct", async (req, res) => {
     const data = await productModel.find();
     res.send(data);
-})
+});
+
+//product one get path
+router.get("/addproduct/:id", async (req, res) => {
+    try{
+        const data = await productModel.findById(req.params.id);
+        res.send(data);
+    }catch (err){
+        res.status(404).send(err);
+    }
+    
+});
+
+//cart get path
+
+router.get("/cart/:id", async (req, res) => {
+    try{
+        const data = await userModel.findById(req.params.id);
+
+        res.send(data.cart);
+    }catch (err){
+        res.status(404).send(err);
+    }
+    
+});
+
 
 //sign in path
+let token;
 router.post("/signin", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -84,7 +111,11 @@ router.post("/signin", async (req, res) => {
             return;
         }
 
-        const user = await userModel.findOne({ email: req.body.email });
+        let user = await userModel.findOne({ email: email });
+        token = await user.generateToken();
+        console.log(token);
+
+
         if (!user) {
             res.status(400).send("not present");
             return;
@@ -94,6 +125,8 @@ router.post("/signin", async (req, res) => {
             res.status(400).send("password not match");
             return;
         }
+
+
         res.status(200).send(user);
     } catch (err) {
         res.send({ status: false, err })

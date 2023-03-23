@@ -11,6 +11,7 @@
     justify-content: space-between;
     width: 95%;
 }
-.sixItem>img{
+.sixItem img{
     width: 155px;
+    cursor: pointer;
 }

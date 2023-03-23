@@ -17,24 +17,27 @@ import { useSelector } from "react-redux";
 
 
 
-function ProductCard() {
-    const productData = useSelector((state) => state.getproduct.entities);
-    let newProductData = [];
+function ProductCard({newProductData}) {
+    // const productData = useSelector((state) => state.getproduct.entities);
+    // let newProductData = [];
 
-    if (productData.length > 5) {
-        newProductData = [...productData]
-        newProductData.splice(5);
-    }
+    // if (productData.length > 5) {
+    //     newProductData = [...productData]
+    //     newProductData.splice(5);
+    // }
+    console.log(newProductData);
     return (
         <>
 
             {newProductData.map((product,ind) => {
                 return (
-                    <Card key={ind} sx={{ maxWidth: 220, border: 'solid #888888 1px' }}>
+                    <Card key={ind} sx={{  }} className="card">
                         <CardMedia
                             component="img"
                             alt="green iguana"
-                            height="150"
+                            // height="100%"
+                            width="100%"
+                            height="auto"
                             image={product.imgLink}
                         />
                         <Typography sx={{ fontSize: 11, color: "#888888", }} component="div">

@@ -19,7 +19,7 @@ function AboutProduct() {
         <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "center" }} className="About-product-main">
             <Box sx={{ width: "95%", display: "flex" }} className="upperPart">
 
-                <Box sx={{ width: "25%", borderRight: "solid 0.5px #888888", color: "#888888" }} className="upperPart-left">
+                <Box sx={{ width: "25%", borderRight: "solid 0.5px #888888", color: "#888888" }} className="sidebar-category">
                     <Box>
                         <h4> Category</h4>
                         <p>
