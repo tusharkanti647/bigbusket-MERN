@@ -10,7 +10,11 @@ import "./ProductPage.css";
 
 function ProductPage() {
     const { isLoading, serverError, apiData } = useFetch("http://localhost:8000/addproduct");
+
+    //const { isLoading, serverError, apiData } = useFetch("http://localhost:8000/addproduct");
+    console.log(apiData);
     let newProductData = [...apiData];
+    //let newProductData = [];
 
     return (
         <Box className="product-page">
@@ -18,11 +22,11 @@ function ProductPage() {
                 <Sidebar />
 
 
-                <Box sx={{display: "flex", flexDirection:"column", flex: 1, }}>
-                    <FormControl sx={{ width: 250, marginRight: 0, marginLeft:"2%", marginBottom:"30px" }}>
+                <Box sx={{ display: "flex", flexDirection: "column", flex: 1, }}>
+                    <FormControl sx={{ width: 250, marginRight: 0, marginLeft: "2%", marginBottom: "30px" }}>
                         <InputLabel id="select-filter">Short By</InputLabel>
                         <Select
-                         defaultValue="popularity"
+                            defaultValue="popularity"
                             labelId="select-filter"
                             id="demo-simple-select"
                             // value={age}

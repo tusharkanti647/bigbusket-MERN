@@ -12,12 +12,13 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import StarIcon from '@mui/icons-material/Star';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 
 
 
 
-function ProductCard({newProductData}) {
+function ProductCard({ newProductData }) {
     // const productData = useSelector((state) => state.getproduct.entities);
     // let newProductData = [];
 
@@ -25,34 +26,43 @@ function ProductCard({newProductData}) {
     //     newProductData = [...productData]
     //     newProductData.splice(5);
     // }
-    console.log(newProductData);
+
     return (
         <>
 
-            {newProductData.map((product,ind) => {
+            {newProductData.map((product, ind) => {
+                const id=product._id;
+                const link=`aboutproduct/${id}`;
                 return (
-                    <Card key={ind} sx={{  }} className="card">
-                        <CardMedia
-                            component="img"
-                            alt="green iguana"
-                            // height="100%"
-                            width="100%"
-                            height="auto"
-                            image={product.imgLink}
-                        />
+
+                    <Card key={ind} className="card">
+                        
+                        <Link to={link} >
+                            <CardMedia
+                                component="img"
+                                alt="green iguana"
+                                // height="100%"
+                                width="100%"
+                                height="auto"
+                                image={product.imgLink}
+                            />
+                        </Link>
                         <Typography sx={{ fontSize: 11, color: "#888888", }} component="div">
                             {product.category}
                         </Typography>
                         <CardContent sx={{ pb: "0px", pt: "1px" }}>
-                            <Typography sx={{ fontSize: 12 }} variant="h6" component="div">
-                                {product.titel}
-                            </Typography>
+                            
+                            <Link to={link} >
+                                <Typography sx={{ fontSize: 12 }} variant="h6" component="div">
+                                    {product.titel}
+                                </Typography>
+                            </Link>
                             <Typography sx={{ display: 'flex', color: "green", fontSize: 12, bgcolor: "#E3EBDA" }} variant="h6" className="rating" component="div">
                                 <p>{product.rating}</p>
                                 <StarIcon sx={{ fontSize: 12 }} />
                             </Typography>
                             <Typography sx={{ fontSize: 11, border: 'solid #888888 1px', color: "#888888" }} component="div">
-                                {product.about.weight} - RS {product.price[1]}
+                            {product.about.weight.length===3 ? (product.about.pcs+"pcs") : (product.about.weight[1] + product.about.weight[0])} - RS {product.price[1]}
                             </Typography>
                             <Typography sx={{ fontSize: 12, color: "#888888", bgcolor: "#F4F3F2" }} component="div">
                                 <del>MRP {product.price[0]}</del> RS {product.price[1]}
@@ -79,6 +89,7 @@ function ProductCard({newProductData}) {
                             </button>
                         </CardActions>
                     </Card>
+
                 )
             })}
 
