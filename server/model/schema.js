@@ -40,6 +40,34 @@ const usersSchema = new mongoose.Schema({
     cart: Array,
 });
 
+
+// //jwt token generet
+// usersSchema.methods.generateAuthToken = async function () {
+//     console.log(this);
+//     try {
+//         let token = jwt.sign({ _id: this._id }, secretKey);
+//         this.tokens = this.tokens.concat({ token: token });
+//         await this.save();
+//     } catch (err) {
+//         console.log(err);
+//     }
+// }
+// generting token
+usersSchema.methods.generatAuthtoken = async function(){
+    try {
+        let token = jwt.sign({ _id: this._id},secretKey,{
+            expiresIn:"1d"
+        });
+        this.tokens = this.tokens.concat({token:token});
+        await this.save();
+        return token;
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 const userModel = mongoose.model("users", usersSchema);
 
 
@@ -67,9 +95,7 @@ const productSchema = new mongoose.Schema({
         type: String,
     },
     about: {
-        weight: [
-           
-        ],
+        weight: [],
         pcs: {
             type: String,
         },
@@ -81,17 +107,7 @@ const productSchema = new mongoose.Schema({
 });
 
 
-//jwt token generet
-usersSchema.methods.generateAuthToken = async function () {
-    console.log(this);
-    try {
-        let token = jwt.sign({ _id: this._id }, secretKey);
-        this.tokens = this.tokens.concat({ token: token });
-        await this.save();
-    } catch (err) {
-        console.log(err);
-    }
-}
+
 
 
 const productModel = mongoose.model("products", productSchema);

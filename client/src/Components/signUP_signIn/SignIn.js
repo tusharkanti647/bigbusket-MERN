@@ -7,7 +7,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const style = {
     // as 'absolute',
@@ -27,6 +27,7 @@ const style = {
 
 export default function SignIn() {
     const [open, setOpen] = useState(false);
+    const [cookieValue, setCookieValue] = useState('');
     const [signInData, setSignInData] = useState({
         password: "",
         email: ""
@@ -58,19 +59,27 @@ export default function SignIn() {
         event.preventDefault();
         const { email, password } = signInData;
 
-        
+
         const respons = await fetch("http://localhost:8000/signin", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: 'same-origin',
             body: JSON.stringify({ email, password })
         });
+
+        //console.log(respons.headers);
 
         const data = await respons.json();
         if (respons.status === 400 || !signInData) {
             alert("no data");
         } else {
             alert("user sucessfull signin");
-            console.log(data);
+            //console.log(data);
+            localStorage.setItem("token", data.token);
+            
+            //navigate to home page
+            handleClose();
+
             setSignInData({
                 ...signInData,
                 email: "",
@@ -79,8 +88,10 @@ export default function SignIn() {
         }
     }
 
+    
 
-
+    
+//console.log(cookieValue);
     return (
         <div>
             <Button onClick={handleOpen}>login</Button>

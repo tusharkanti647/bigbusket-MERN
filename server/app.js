@@ -1,9 +1,9 @@
 const dotenv = require("dotenv");
 const cors = require('cors');
 const mongoose = require("mongoose");
-
 const express = require("express");
 const app = express();
+const cookieParser = require("cookie-parser");
 
 
 dotenv.config({ path: "./config.env" });
@@ -13,8 +13,11 @@ require("./connection");
 
 const userModel = require("./model/schema");
 
+//app.use(express.json());
+
 app.use(cors());
 //we can coonect the router file ushinh this middelwear
+app.use(cookieParser(""));
 app.use(require("./router/auth"));
 
 

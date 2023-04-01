@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 import { Box, Button, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SignIn from "./SignIn";
 
 
@@ -18,6 +18,7 @@ function SignUp() {
         password: "",
         conPassword: ""
     });
+    const navigate = useNavigate();
 
 
 
@@ -33,27 +34,38 @@ function SignUp() {
     //-------------------------------------------------------------------------
     const signupUser = async (event) => {
         event.preventDefault();
-        const { name, number, email, password, conPassword } = signUpData;
+        try {
+            const { name, number, email, password, conPassword } = signUpData;
 
-        console.log("hello");
-        const respons = await fetch("http://localhost:8000/signup", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, number, email, password, conPassword })
-        });
-
-        const data = await respons.json();
-        if (respons.status === 422 || !signUpData) {
-            alert("no data");
-        } else {
-            alert("user sucessfull signup");
-            setSignUpData({
-                ...signUpData, name: "",
-                number: "",
-                email: "",
-                password: "",
-                conPassword: ""
+            //console.log("hello");
+            const respons = await fetch("http://localhost:8000/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, number, email, password, conPassword })
             });
+
+            const data = await respons.json();
+            if (respons.status === 422 || !signUpData) {
+                alert("no data");
+            } else {
+                alert("user sucessfull signup");
+
+                //console.log(data);
+                localStorage.setItem("token", data.token);
+
+                //navigate to the home page
+                navigate("/");
+
+                setSignUpData({
+                    ...signUpData, name: "",
+                    number: "",
+                    email: "",
+                    password: "",
+                    conPassword: ""
+                });
+            }
+        } catch (e) {
+            console.log(e);
         }
     }
 
