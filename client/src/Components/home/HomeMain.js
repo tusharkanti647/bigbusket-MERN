@@ -1,6 +1,8 @@
 
 
 import "./HomeMain.css"
+import { addToBasket, removeFromBasket, clearBasket } from "../../redux_toolkit/slices/basketProductArrSlices"
+
 import topMeetBanner from "../../image/banner/topMeet.webp"
 import ayurveda from "../../image/offerBar/ayurveda.webp"
 import byeMoreSaveMore from "../../image/offerBar/bye-more-save-more.webp"
@@ -24,7 +26,7 @@ import BannerSlid from "./BannerSlid"
 import ProductCard from "../card/ProductCard"
 
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { fetchProductData } from "../../redux_toolkit/slices/getProduvtSlices"
 import { useFetch } from "../../survices/getapi"
 
@@ -36,7 +38,11 @@ const Beauty = ["https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b
     "https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-min-30_m_250223_05.jpg",
     "https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-under-199_m_250223_06.jpg"]
 function HomeMain() {
+    const [productQty, setProductQty] =useState(1);
+    const dispatch = useDispatch();
+
     const { isLoading, serverError, apiData } = useFetch("http://localhost:8000/addproduct");
+
     let newProductData = [];
     if (apiData) {
         newProductData = [...apiData];
@@ -58,11 +64,11 @@ function HomeMain() {
 
 
         <Box className="home-main">
-            <Box sx={{  }} className="home-card-contener">
-                <ProductCard newProductData={newProductData} />
-                {/* <ProductCard />
-                <ProductCard />
-                <ProductCard /><ProductCard /> */}
+            <Box  className="home-card-contener">
+                {newProductData.map((product)=>{
+                    return (<ProductCard product={product}/>)
+                })}
+                
             </Box>
             <div className="top-bar">
                 <img src={ayurveda} alt="ayurveda" />

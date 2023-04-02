@@ -9,8 +9,7 @@ import SignUp from './Components/signUP_signIn/SignUp';
 import AboutProduct from './Components/productDetals/AboutProduct';
 import Basket from './Components/basket/Basket';
 import ProductPage from './Components/products/ProductPage';
-
-
+import NewNav from './Components/header/NewNav';
 
 const style = {
 
@@ -23,8 +22,8 @@ function App() {
 
   return (<>
 
-    <Navbaar />
-    {/* <NewNav /> */}
+    {/* <Navbaar /> */}
+    <NewNav />
     <Routes>
     
       <Route path='/' element={<HomeMain />}></Route>
@@ -33,6 +32,7 @@ function App() {
       <Route path="/basket" element={<Basket />}></Route>
       <Route path='/products' element={<ProductPage />}></Route>
     </Routes>
+      
     <Footer />
 
   </>);
