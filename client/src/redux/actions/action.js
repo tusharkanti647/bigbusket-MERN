@@ -1,6 +1,6 @@
 const getProducts = () => async (dispatch) => {
     try {
-        const productData = await fetch("http://localhost:8000/addproduct", {
+        const productData = await fetch("/addproduct", {
             method: "GET",
             headers: {
                 "Content_Type": "application/json"

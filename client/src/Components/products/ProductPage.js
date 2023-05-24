@@ -21,7 +21,7 @@ function ProductPage() {
 
         try {
             const fatchFun = async () => {
-                let uid = "http://localhost:8000/products-search";
+                let uid = "/products-search";
                 let querySearchString = "";
 
                 querySearchString = searchName ? querySearchString + "searchName=" + searchName : querySearchString;

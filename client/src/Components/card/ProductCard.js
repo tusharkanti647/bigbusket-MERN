@@ -59,7 +59,7 @@ function ProductCard({ product, basketQty }) {
     //useEffect(() => {
     const basketUpdate = async () => {
 
-        const response = await fetch("http://localhost:8000/basket/" + id, {
+        const response = await fetch("/basket/" + id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -100,7 +100,7 @@ function ProductCard({ product, basketQty }) {
     useEffect(() => {
         //console.log(product.titel);
         const hndelProductQuantity = async () => {
-            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
+            const response = await fetch("/basket-product/quantity-update", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

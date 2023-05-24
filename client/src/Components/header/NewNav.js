@@ -37,7 +37,7 @@ function NewNav() {
   //fetch badge count
   //-------------------------------------------------------------------------
   const fetchBadge = async () => {
-    const response = await fetch("http://localhost:8000/basket_badge/count", {
+    const response = await fetch("/basket_badge/count", {
       method: "GET",
       headers: {
         Authorization: token,

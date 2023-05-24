@@ -31,7 +31,7 @@ function Basket() {
     useEffect(() => {
         //if (basketProductArrReduxToolKit.length < 1) {
             const fetchFun = async () => {
-                const response = await fetch("http://localhost:8000/basket", {
+                const response = await fetch("/basket", {
                     method: "GET",
                     headers: { Authorization: localStorage.getItem("token") }
                 });
@@ -78,7 +78,7 @@ function Basket() {
     //remove all the items from basket
     //----------------------------------------------------------------------------------------
     const removeAllItem = async () => {
-        const respons =await fetch("http://localhost:8000/empty-basket", {
+        const respons =await fetch("/empty-basket", {
             method: "PUT",
             headers: { "Authorization": localStorage.getItem("token") }
         });

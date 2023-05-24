@@ -19,7 +19,7 @@ function ItemList({ product, setBasketProductArr }) {
     useEffect(() => {
         //console.log(product.titel);
         const hndelProductQuantity = async () => {
-            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
+            const response = await fetch("/basket-product/quantity-update", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -35,7 +35,7 @@ function ItemList({ product, setBasketProductArr }) {
     //remove 1 product from basket
     //-----------------------------------------------------------------------------------------
     const remove1Product = async () => {
-        const response = await fetch("http://localhost:8000/remove-product", {
+        const response = await fetch("/remove-product", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

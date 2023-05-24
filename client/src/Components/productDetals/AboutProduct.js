@@ -38,7 +38,7 @@ function AboutProduct() {
     //----------------------------------------------------------------------------------------
     useEffect(() => {
         const fetchFun = async () => {
-            const response = await fetch("http://localhost:8000/basket", {
+            const response = await fetch("/basket", {
                 method: "GET",
                 headers: { Authorization: localStorage.getItem("token") }
             });
@@ -59,7 +59,7 @@ function AboutProduct() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/addproduct/${id}`);
+                const response = await fetch(`/addproduct/${id}`);
                 const data = await response.json();
                 setOneProductData({ ...data });
             } catch (error) {
@@ -85,7 +85,7 @@ function AboutProduct() {
     useEffect(() => {
         //console.log(product.titel);
         const hndelProductQuantity = async () => {
-            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
+            const response = await fetch("/basket-product/quantity-update", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -102,7 +102,7 @@ function AboutProduct() {
     //product update 
     //------------------------------------------------------------------------------------
     const basketUpdate = async () => {
-        const response = await fetch("http://localhost:8000/basket/" + id, {
+        const response = await fetch("/basket/" + id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

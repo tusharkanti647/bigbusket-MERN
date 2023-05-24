@@ -38,7 +38,7 @@ function SignUp() {
             const { name, number, email, password, conPassword } = signUpData;
 
             //console.log("hello");
-            const respons = await fetch("http://localhost:8000/signup", {
+            const respons = await fetch("/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, number, email, password, conPassword })
