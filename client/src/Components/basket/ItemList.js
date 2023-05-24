@@ -1,20 +1,66 @@
+import "./ItemList.css";
 
 import { Box } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import CloseIcon from '@mui/icons-material/Close';
-import "./ItemList.css";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { isAddProductReducer } from "../../redux_toolkit/slices/functionSlices";
 
 
-function ItemList() {
-    const [itemNumber, setItemNumber] = useState(1);
+function ItemList({ product, setBasketProductArr }) {
+    const [itemNumber, setItemNumber] = useState(product.qty);
+    const dispatch = useDispatch();
+
+    //product Quantity updte
+    //--------------------------------------------------------------------------------
+    useEffect(() => {
+        //console.log(product.titel);
+        const hndelProductQuantity = async () => {
+            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("token"),
+                },
+                body: JSON.stringify({ qty: itemNumber, titel: product.titel })
+            })
+        }
+        hndelProductQuantity();
+    }, [itemNumber]);
+
+
+    //remove 1 product from basket
+    //-----------------------------------------------------------------------------------------
+    const remove1Product = async () => {
+        const response = await fetch("http://localhost:8000/remove-product", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            },
+            body: JSON.stringify({ titel: product.titel })
+        });
+        if (response.statusText === "Unauthorized") {
+            //console.log("hello");
+            //dispatch(addToBasket({ ...product, qty: productQty }));
+            alert("please log in first");
+        } else {
+            let data = await response.json();
+            setBasketProductArr(data);
+            dispatch((isAddProductReducer(true)))
+        }
+    }
+
+
 
     return (<>
         <Box className="cart-table-body">
             <Box sx={{ width: "52%" }} className="cart-table-body-left">
-                <div style={{}}>
-                    <img src="https://www.bigbasket.com/media/uploads/p/l/10000074_19-fresho-cauliflower.jpg"></img>
+                <div style={{ justifyContent: "center", alignItems: "center" }}>
+                    <img src={product.imgLink} />
                     <div>
                         <h3>Fresho Cauliflower (Medium) / Phulcop</h3>
                         <h4>1 pc (approx. 400 to 600 g)</h4>
@@ -23,21 +69,22 @@ function ItemList() {
             </Box>
             <Box className="cart-table-body-right">
                 <div>
-                    <h3>Rs. 25.50</h3>
-                    <h4><strike>Rs. 38.60</strike></h4>
+                    <h3>Rs. {product.discountPrice}</h3>
+                    <h4><strike>Rs. {product.originalPrice}</strike></h4>
                 </div>
 
                 <div className="item-count">
-                    <button onClick={() => setItemNumber(itemNumber + 1)}><AddIcon /></button>
-                    <input type="number" value={itemNumber} />
                     <button onClick={() => setItemNumber(itemNumber - 1)}><RemoveIcon /></button>
+                    <div id="quantity_input_box">{itemNumber}</div>
+                    <button onClick={() => setItemNumber(itemNumber + 1)}><AddIcon /></button>
                 </div>
 
                 <div>
-                    <h3>Rs.25.50</h3>
-                    <CloseIcon sx={{ color: "#888888", cursor: "pointer" }} />
+                    <h3>Rs. {product.qty * product.discountPrice}</h3>
+                    <CloseIcon onClick={remove1Product} id="remove-item-icon" sx={{ color: "#888888", cursor: "pointer" }} />
+                    <h4 id="maximum-price"><strike>Rs. {product.qty * product.originalPrice}</strike></h4>
                 </div>
-                <h3>Rs.13.10</h3>
+                <h3>Rs. {product.originalPrice - product.discountPrice}</h3>
             </Box>
         </Box>
     </>)

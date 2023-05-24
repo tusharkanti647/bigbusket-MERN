@@ -1,34 +1,18 @@
 import "./Menu.css";
 import SignIn from "../../signUP_signIn/SignIn";
 
-// import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import { IconButton, TextField } from '@mui/material';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-// const style = {
-//     // as 'absolute',
-//     position: 'absolute',
-//     top: '60px',
-//     left: '60%',
-//     // transform: 'translate(-50%, -50%)',
-//     width: 400,
-//     bgcolor: 'background.paper',
-//     border: '2px solid #000',
-//     boxShadow: 24,
-//     pt: 2,
-//     px: 4,
-//     pb: 3,
-// };
 
-
-export default function Menu() {
+export default function Menu({ badgeCount }) {
     const [open, setOpen] = useState(false);
-
+    const navigate = useNavigate();
 
 
     //handel model close or open
@@ -47,9 +31,14 @@ export default function Menu() {
 
 
 
-    //signin data send to the server
+    //signout 
     //-------------------------------------------------------------------------
-
+    const handelSignOut = () => {
+        localStorage.removeItem("token");
+        handleClose();
+        navigate("/");
+        window.location.reload();
+    }
 
 
 
@@ -82,7 +71,7 @@ export default function Menu() {
                     <Link to="/" onClick={handleClose}>
                         <div>Home</div>
                     </Link>
-                    <SignIn />
+                    {badgeCount ? <div onClick={handelSignOut}>SignOut</div> : <SignIn />}
                     <div>User</div>
                 </Box>
 

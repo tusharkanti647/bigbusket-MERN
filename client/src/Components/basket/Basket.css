@@ -1,11 +1,9 @@
 .your-item {
   margin-top: 50px;
-  /* padding-bottom: 5px; */
   width: 95%;
   font-size: 15px;
   color: #888888;
   border-bottom: solid 0.5px #888888;
-  /* font-weight: 10; */
 }
 
 .cart-table-heder {
@@ -114,4 +112,34 @@
 .cart-bottom-part-right > div Button:hover {
   background-color: #FDE67B;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset;
+}
+
+@media (max-width: 730px) {
+  .cart-table-heder-right h3:first-child{
+    display: none;
+  }
+  .bill-charges > div:last-child > p{
+    margin-top: 13px;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 550px){
+  .cart-bottom-part{
+    flex-direction: column;
+  }
+  .cart-bottom-part-right{
+    width: 100%;
+  }
+  .cart-table-heder{
+    display: none;
+  }
+  .cart-buttom-part-botton-wrapper {
+    margin: 30px 5%;
+    flex-direction: row;
+  }
+  .cart-buttom-part-botton-wrapper Button{
+    font-size: 10px;
+  }
 }

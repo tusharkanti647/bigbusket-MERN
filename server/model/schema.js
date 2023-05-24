@@ -53,19 +53,19 @@ const usersSchema = new mongoose.Schema({
 //     }
 // }
 // generting token
-usersSchema.methods.generatAuthtoken = async function(){
-    try {
-        let token = jwt.sign({ _id: this._id},secretKey,{
-            expiresIn:"1d"
-        });
-        this.tokens = this.tokens.concat({token:token});
-        await this.save();
-        return token;
+// usersSchema.methods.generatAuthtoken = async function(){
+//     try {
+//         let token = jwt.sign({ _id: this._id},secretKey,{
+//             expiresIn:"1d"
+//         });
+//         this.tokens = this.tokens.concat({token:token});
+//         await this.save();
+//         return token;
 
-    } catch (error) {
-        console.log(error);
-    }
-}
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 
 const userModel = mongoose.model("users", usersSchema);

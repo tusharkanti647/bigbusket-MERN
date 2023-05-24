@@ -11,22 +11,39 @@ import { Box, createTheme, Grid } from '@mui/material';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import StarIcon from '@mui/icons-material/Star';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { basketProductCount, isAddProductReducer } from "../../redux_toolkit/slices/functionSlices";
 
 
 
 
 
 
-function ProductCard({ product }) {
+function ProductCard({ product, basketQty }) {
     const [productQty, setProductQty] = useState(1);
+    const [itemNumber, setItemNumber] = useState(product.qty);
+    //const [badgeCount, setBadgeCount] = useState(0);
+    //const [isStateChange, setIsStateChange] = useState(false);
     const dispatch = useDispatch();
 
+    //if  basketQty present then  productQty set as basketQty value
+    //------------------------------------------------------------------------------
+    useEffect(() => {
+        if (basketQty) {
+            setProductQty(basketQty);
+        }
+    }, [basketQty]);
 
-
+    //creat link and product id
+    //---------------------------------------------------------------------------------
+    const id = product._id;
+    const link = `aboutproduct/${id}`;
+    const token = localStorage.getItem("token");
     // const productData = useSelector((state) => state.getproduct.entities);
     // let newProductData = [];
 
@@ -35,14 +52,65 @@ function ProductCard({ product }) {
     //     newProductData.splice(5);
     // }
 
-    const handelAdd = () => {
-        dispatch(addToBasket({...product, qty:productQty}))
+
+
+    //product update 
+    //------------------------------------------------------------------------------------
+    //useEffect(() => {
+    const basketUpdate = async () => {
+
+        const response = await fetch("http://localhost:8000/basket/" + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token
+            },
+
+            body: JSON.stringify({ qty: productQty })
+        });
+        if (response.statusText === "Unauthorized") {
+            //console.log("hello");
+            dispatch(addToBasket({ ...product, qty: productQty }));
+            alert("please log in first");
+        }
+        // else{
+        //     const data =await response.json();
+        //     //console.log(data);
+        //     dispatch(basketProductCount(data.length));
+        // }
+
+
     }
-    
-    //creat link and product id
-    //---------------------------------------------------------------------------------
-    const id = product._id;
-    const link = `aboutproduct/${id}`;
+    //})
+    // useEffect(()=>{
+    //     fetchBadge();
+
+    //     setIsStateChange(false); 
+    // },[isStateChange])
+
+    //add product in basket
+    //-------------------------------------------------------------------------
+    const handelAdd = () => {
+        basketUpdate();
+        dispatch(isAddProductReducer(true));
+    }
+
+    //product Quantity updte
+    //--------------------------------------------------------------------------------
+    useEffect(() => {
+        //console.log(product.titel);
+        const hndelProductQuantity = async () => {
+            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("token"),
+                },
+                body: JSON.stringify({ qty: productQty, titel: product.titel })
+            })
+        }
+        hndelProductQuantity();
+    }, [productQty]);
 
     //---------------------------------------------------------------------------------
     return (
@@ -74,10 +142,10 @@ function ProductCard({ product }) {
                         <StarIcon sx={{ fontSize: 12 }} />
                     </Typography>
                     <Typography sx={{ fontSize: 11, border: 'solid #888888 1px', color: "#888888" }} component="div">
-                        {product.about.weight.length === 3 ? (product.about.pcs + "pcs") : (product.about.weight[1] + product.about.weight[0])} - RS {product.price[1]}
+                        {product.about.weight.length === 3 ? (product.about.pcs + "pcs") : (product.about.discountPrice + product.about.originalPrice)} - RS {product.discountPrice}
                     </Typography>
                     <Typography sx={{ fontSize: 12, color: "#888888", bgcolor: "#F4F3F2" }} component="div">
-                        <del>MRP {product.price[0]}</del> RS {product.price[1]}
+                        <del>MRP {product.originalPrice}</del> RS {product.discountPrice}
                     </Typography>
                     <Typography sx={{ display: 'flex', color: "#888888", bgcolor: "#F4F3F2" }} className="delhiver-detals" component="div">
                         {/* <div>car</div> */}
@@ -86,19 +154,27 @@ function ProductCard({ product }) {
                     </Typography>
                 </CardContent>
                 <CardActions sx={{ pt: "0px", bgcolor: "#F4F3F2" }}>
-                    <div className="nav_searchbaar">
-                        <div className="search_icon">
-                            <p>Qty</p>
-                        </div>
-                        <input type="text" value={productQty} onChange={(event) => setProductQty(event.target.value)} />
+                    {basketQty ?
+                        <div className="item-count">
+                            <button onClick={() => setProductQty(productQty - 1)}><RemoveIcon /></button>
+                            <div id="quantity_input_box">{productQty}</div>
+                            <button onClick={() => setProductQty(productQty + 1)}><AddIcon /></button>
+                        </div> :
+                        <>
+                            <div className="nav_searchbaar">
+                                <div className="search_icon">
+                                    <p>Qty</p>
+                                </div>
+                                <input type="text" name="qty" value={productQty} onChange={(event) => setProductQty(event.target.value)} />
 
-                    </div>
-                    {/* <Button size="small">Share</Button>  name=""
+                            </div>
+                            {/* <Button size="small">Share</Button>  name=""
                                 onChange={(e) => getText(e.target.value)}*/}
-                    <button className="add-to-card-button" onClick={handelAdd}>
-                        <p>ADD</p>
-                        <ShoppingBasketIcon />
-                    </button>
+                            <button className="add-to-card-button" onClick={handelAdd}>
+                                <p>ADD</p>
+                                <ShoppingBasketIcon />
+                            </button>
+                        </>}
                 </CardActions>
             </Card>
         </>

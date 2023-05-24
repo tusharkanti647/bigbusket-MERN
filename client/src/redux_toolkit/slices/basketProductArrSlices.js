@@ -14,7 +14,7 @@ const basketProductArraySlice = createSlice({
         },
         clearBasket: (state, action) => {
             state = [];
-        }
+        },
     }
 });
 

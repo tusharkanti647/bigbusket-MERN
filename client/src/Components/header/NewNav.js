@@ -7,37 +7,77 @@ import "./NewNav.css"
 import logo from "../../image/logo1.jpg";
 import Menu from "./model/Menu";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { basketProductCount, searchNameReducer, isAddProductReducer } from "../../redux_toolkit/slices/functionSlices";
 
 
 function NewNav() {
+  const [badgeCount, setBadgeCount] = useState(0);
+  const [searchInputValue, setSearchInputValue] = useState("");
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  const ischeck = useSelector((state) => state.functionSlices.isAddProduct);
 
 
-  //get the cart product array
   const basketProductArr = useSelector((state) => state.basketProductArr);
-  let basketBadgeCount = basketProductArr.length;
+  //let badgeCount = useSelector((state) => state.functionSlices)
+  let basketBadgeCount;
 
-  return (<div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-    <header>
-      <nav>
-        <div className="left">
-          <div className="navlogo" >
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { sm: 'block' } }}
-            >
-              <img src={logo} alt='logo' />
-            </Typography>
-            <span className='logo_div' style={{ display: "flex", flexDirection: 'column' }}>
-              <Box className="logo_text" sx={{ color: "red" }} >big</Box>
-              <Box className="logo_text" sx={{ color: "black" }}>basket</Box>
-            </span>
-          </div>
+ 
+  basketBadgeCount = basketProductArr.length;
 
-          <div className="nav_searchbaar">
-            {/* <input type="text" name=""
+
+  //despatch sarch data to the redux toolkit
+  //-------------------------------------------------------------------------
+  const handelSearchData = () => {
+    dispatch(searchNameReducer(searchInputValue));
+  }
+
+  //fetch badge count
+  //-------------------------------------------------------------------------
+  const fetchBadge = async () => {
+    const response = await fetch("http://localhost:8000/basket_badge/count", {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      }
+    });
+    if (response.statusText !== "Unauthorized") {
+      const data = await response.json();
+      dispatch(isAddProductReducer(false));
+      setBadgeCount(data.badgeContent);
+    }
+  }
+
+  useEffect(() => {
+    fetchBadge();
+  }, [ischeck]);
+
+
+
+  return (
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <header>
+        <nav>
+          <div className="left">
+            <div className="navlogo" >
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ display: { sm: 'block' } }}
+              >
+                <img src={logo} alt='logo' />
+              </Typography>
+              <span className='logo_div' style={{ display: "flex", flexDirection: 'column' }}>
+                <Box className="logo_text" sx={{ color: "red" }} >big</Box>
+                <Box className="logo_text" sx={{ color: "black" }}>basket</Box>
+              </span>
+            </div>
+
+            <div className="nav_searchbaar">
+              {/* <input type="text" name=""
             onChange={(e) => getText(e.target.value)}
             placeholder="Search Your Products" />
           <div className="search_icon">
@@ -46,51 +86,53 @@ function NewNav() {
 
 
 
-            <input type="text" name=""
-              // onChange={(e) => getText(e.target.value)}
-              placeholder="Search Your Products" />
+              <input type="text" name=""
+                onChange={(e) => setSearchInputValue(e.target.value)}
+                placeholder="Search Your Products" />
 
-            <IconButton sx={{ m: "0", p: "0" }}>
-              <SearchIcon id="search_icon" />
-            </IconButton>
+              <IconButton sx={{ m: "0", p: "0" }}>
+                <SearchIcon onClick={handelSearchData} id="search_icon" />
+              </IconButton>
+            </div>
+
           </div>
 
+          <div className="right">
+
+            <Menu badgeCount={badgeCount} />
+
+            <Link to="/basket" >
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                //   onClick={handleProfileMenuOpen}
+                color="black"
+              >
+                <Badge badgeContent={badgeCount > 0 ? badgeCount : null} color="error">
+                  <ShoppingCartIcon style={{ fontSize: 50 }} />
+                </Badge>
+              </IconButton>
+            </Link>
+          </div>
+        </nav>
+
+        <div className="nav_searchbaar nav_searchbaar_down">
+
+          <input type="text" name=""
+            value={searchInputValue}
+            onChange={(e) => setSearchInputValue(e.target.value)}
+            placeholder="Search Your Products" />
+
+          <IconButton sx={{ m: "0", p: "0" }}>
+            <SearchIcon id="search_icon" />
+          </IconButton>
         </div>
 
-        <div className="right">
-
-          <Menu />
-
-          <Link to="/basket" >
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-haspopup="true"
-              //   onClick={handleProfileMenuOpen}
-              color="black"
-            >
-              {basketBadgeCount > 0 ? (<Badge badgeContent={basketBadgeCount} color="error">
-                <ShoppingCartIcon style={{ fontSize: 50 }} />
-              </Badge>) : ""}
-            </IconButton>
-          </Link>
-        </div>
-      </nav>
-
-      <div className="nav_searchbaar nav_searchbaar_down">
-
-        <input type="text" name=""
-          // onChange={(e) => getText(e.target.value)}
-          placeholder="Search Your Products" />
-
-        <IconButton sx={{ m: "0", p: "0" }}>
-          <SearchIcon id="search_icon" />
-        </IconButton>
-      </div>
-
-    </header>
-  </div>)
+      </header>
+    </div>
+  )
 }
 
 export default NewNav;

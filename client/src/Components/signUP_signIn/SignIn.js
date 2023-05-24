@@ -76,9 +76,9 @@ export default function SignIn() {
             alert("user sucessfull signin");
             //console.log(data);
             localStorage.setItem("token", data.token);
-            
+            window.location.reload();
             //navigate to home page
-            handleClose();
+            //handleClose();
 
             setSignInData({
                 ...signInData,

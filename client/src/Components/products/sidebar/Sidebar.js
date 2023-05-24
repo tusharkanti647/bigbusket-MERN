@@ -1,12 +1,50 @@
+import { useState } from "react";
 import "./Sidebar.css";
 import { Box, createTheme, Grid } from '@mui/material';
+import { useDispatch } from "react-redux";
+import { filterArrReducer } from "../../../redux_toolkit/slices/functionSlices";
 
 function Sidebar() {
+    const [filterDataArr, setFilterDataArr] =useState ([{ name: "fish", isChecked: false }, { name: "borges", isChecked: false }, { name: "fresho", isChecked: false }, { name: "Dhara", isChecked: false }]);
+    //const [filterArr, setFilterArr] = useState([]);
+const dispatch=useDispatch();
+
+    //console.log(inp);
+    const handelChekBox = (event) => {
+        const { checked, name } = event.target;
+        console.log({ name, checked });
+        let newArr = filterDataArr.map((ele) => ele.name === name ? { ...ele, isChecked: checked } : ele);
+        let arr = newArr.filter((ele) => ele.isChecked === true).map((ele) => ele.name);
+        console.log(arr);
+        setFilterDataArr(newArr);
+        //setFilterArr(arr);
+        dispatch(filterArrReducer(arr));
+    }
+    
+
+
     return (
         <Box sx={{ width: "25%", borderRight: "solid 0.5px #888888", color: "#888888" }} className="sidebar-category">
             <Box>
                 <h4> Category</h4>
                 <p>
+                    {filterDataArr.map((ele) => (
+                        <>
+                            <label className="label">
+                                <input type="checkbox" name={ele.name} value={ele.name} onChange={handelChekBox} /> {ele.name}
+                            </label><br />
+                        </>
+                    ))}
+
+                    {/* <label className="label">
+                        <input type="checkbox" name="checkbox" value="" /> borges
+                    </label><br />
+                    <label className="label">
+                        <input type="checkbox" name="checkbox" value="" /> fresho
+                    </label><br />
+                    <label className="label">
+                        <input type="checkbox" name="checkbox" value="" /> Dhara
+                    </label><br /> */}
                     Fruits & Vegetables  <br />
                     Foodgrains, Oil & Masala  <br />
                     Bakery, Cakes & Dairy  <br />
@@ -41,7 +79,7 @@ function Sidebar() {
             <Box>
                 <h4>Brands</h4>
                 <p>
-                    <label class="label">
+                    <label className="label">
                         <input type="checkbox" name="checkbox" value="text" /> Text
                     </label><br />
                     Fresho<br />

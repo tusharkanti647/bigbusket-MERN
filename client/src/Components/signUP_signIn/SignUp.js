@@ -55,6 +55,7 @@ function SignUp() {
 
                 //navigate to the home page
                 navigate("/");
+                window.location.reload();
 
                 setSignUpData({
                     ...signUpData, name: "",

@@ -38,8 +38,11 @@ const Beauty = ["https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b
     "https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-min-30_m_250223_05.jpg",
     "https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-under-199_m_250223_06.jpg"]
 function HomeMain() {
-    const [productQty, setProductQty] =useState(1);
+    const [productQty, setProductQty] = useState(1);
+    const [basketProductArr, setBasketProductArr] = useState([]);
+    const ischeck = useSelector((state) => state.functionSlices.isAddProduct);
     const dispatch = useDispatch();
+    const token = localStorage.getItem('token');
 
     const { isLoading, serverError, apiData } = useFetch("http://localhost:8000/addproduct");
 
@@ -49,13 +52,34 @@ function HomeMain() {
         newProductData.splice(5);
     }
 
+    useEffect(() => {
+        const fetchFun = async () => {
+            const response = await fetch("http://localhost:8000/basket", {
+                method: "GET",
+                headers: { Authorization: localStorage.getItem("token") }
+            });
+            if (response.statusText === "Unauthorized") {
 
+                //navigate("./");
+                return;
+            } else {
+                const data = await response.json();
+                setBasketProductArr([...data])
+            }
+        }
+        fetchFun();
+    }, [ischeck])
 
     // const dispatch = useDispatch();
     // useEffect(() => {
     //     dispatch(fetchProductData());
     // }, [dispatch]);
 
+    //cart product present or not
+    //-----------------------------------------------------------------
+    const findCartProduct = (product) => {
+        return basketProductArr.find((ele) => ele._id === product._id);
+    }
 
 
     return (<>
@@ -64,11 +88,11 @@ function HomeMain() {
 
 
         <Box className="home-main">
-            <Box  className="home-card-contener">
-                {newProductData.map((product)=>{
-                    return (<ProductCard product={product}/>)
+            <Box className="home-card-contener">
+                {newProductData.map((product, ind) => {
+                    return (findCartProduct(product) ? <ProductCard key={ind} basketQty={findCartProduct(product).qty} product={product} /> : <ProductCard key={ind} product={product} />)
                 })}
-                
+
             </Box>
             <div className="top-bar">
                 <img src={ayurveda} alt="ayurveda" />
