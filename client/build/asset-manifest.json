@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c00e812b.css",
+    "main.js": "/static/js/main.fdbbe126.js",
+    "static/media/protein.webp": "/static/media/protein.7fec885470c2769ab75a.webp",
+    "static/media/upTo50.webp": "/static/media/upTo50.eca15a5bbb06e35f7eef.webp",
+    "static/media/induslnd.jpg": "/static/media/induslnd.bea3d1033400e03afb80.jpg",
+    "static/media/kotak.jpg": "/static/media/kotak.9b1f338be734bf3bfdcd.jpg",
+    "static/media/city.jpg": "/static/media/city.5ea9a0dc47679c76736b.jpg",
+    "static/media/american.jpg": "/static/media/american.3ac79380813e04b118d0.jpg",
+    "static/media/topMeet.webp": "/static/media/topMeet.7794a6cd53797a5cbc3a.webp",
+    "static/media/baby.webp": "/static/media/baby.21e6f400b8ada0c25ca6.webp",
+    "static/media/bakery.webp": "/static/media/bakery.7a515d85c0209eced8a4.webp",
+    "static/media/logo1.jpg": "/static/media/logo1.1997aa7053d56a3e66f0.jpg",
+    "static/media/newPass.webp": "/static/media/newPass.822369f7235d8178512b.webp",
+    "static/media/bye-more-save-more.webp": "/static/media/bye-more-save-more.30907cd7b28d86965bdc.webp",
+    "static/media/Eggs-meat.webp": "/static/media/Eggs-meat.3207ea26fae8319c0a1d.webp",
+    "static/media/deals-of-the-day.webp": "/static/media/deals-of-the-day.82ecdc0135d66f900b67.webp",
+    "static/media/combo-store.webp": "/static/media/combo-store.4e74c1f04112531db773.webp",
+    "static/media/ayurveda.webp": "/static/media/ayurveda.730c0c2d0f8dca43c489.webp",
+    "index.html": "/index.html",
+    "main.c00e812b.css.map": "/static/css/main.c00e812b.css.map",
+    "main.fdbbe126.js.map": "/static/js/main.fdbbe126.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c00e812b.css",
+    "static/js/main.fdbbe126.js"
+  ]
+}
