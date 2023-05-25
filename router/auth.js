@@ -106,7 +106,8 @@ router.post("/signin", async (req, res) => {
         res.status(201).json({ user, token: "Bearer " + token });
     } catch (error) {
         res.status(400).json({ error: "invalid crediential pass" });
-        console.log("error the bhai catch ma for login time" + error.message);
+        console.log(error);
+        //console.log("error the bhai catch ma for login time" + error.message);
     }
 });
 
