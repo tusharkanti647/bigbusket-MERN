@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 //dotenv.config({path:"./config.env"});
 
 const db = process.env.DATABASE;
-mongoose.connect("mongodb://127.0.0.1:27017/bigbusket")
+mongoose.connect(db)
     //mongoose.connect(db)
     .then(() => {
         console.log("server is connect with mongodb");
