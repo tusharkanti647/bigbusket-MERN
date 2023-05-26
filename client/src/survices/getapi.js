@@ -32,7 +32,7 @@ const useFetch = (url) => {
     useEffect(() => {
         setIsLoading(true);
         const fetchData = async () => {
-            console.log("hello");
+            //console.log("hello");
             try {
                 const resp = await fetch(url);
                 const data = await resp.json();

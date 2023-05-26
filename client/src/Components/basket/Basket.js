@@ -9,8 +9,10 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import ItemList from "./ItemList";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import Lodar from "../lodar/Lodar";
+import { isAddProductReducer } from "../../redux_toolkit/slices/functionSlices";
 
 
 function Basket() {
@@ -22,7 +24,9 @@ function Basket() {
     //const [totalSubtotal, setTotalSubtotal] = useState(0);
     const [totalSavings, setTotalSavings] = useState(0);
     const [basketProductArr, setBasketProductArr] = useState([]);
+    const [isLodar, setIsLodar] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const basketProductArrReduxToolKit = useSelector((state) => state.basketProductArr);
 
@@ -31,7 +35,8 @@ function Basket() {
     useEffect(() => {
         //if (basketProductArrReduxToolKit.length < 1) {
             const fetchFun = async () => {
-                const response = await fetch("/basket", {
+                setIsLodar(true);
+                const response = await fetch("http://localhost:8000/basket", {
                     method: "GET",
                     headers: { Authorization: localStorage.getItem("token") }
                 });
@@ -43,6 +48,7 @@ function Basket() {
                     const data = await response.json();
                     setBasketProductArr([...data])
                 }
+                setIsLodar(false);
             }
             fetchFun();
 
@@ -78,12 +84,15 @@ function Basket() {
     //remove all the items from basket
     //----------------------------------------------------------------------------------------
     const removeAllItem = async () => {
-        const respons =await fetch("/empty-basket", {
+        setIsLodar(true);
+        const respons =await fetch("http://localhost:8000/empty-basket", {
             method: "PUT",
             headers: { "Authorization": localStorage.getItem("token") }
         });
         setBasketProductArr([]);
+        dispatch((isAddProductReducer(true)))
         const data = await respons.json();
+        setIsLodar(false);
     }
 
 
@@ -116,7 +125,11 @@ function Basket() {
     //     getBasketProduct();
     // }, []);
 
-
+if(isLodar){
+    return(
+        <Lodar />
+    )
+}
 
     return (<Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
         <Box className="your-item">

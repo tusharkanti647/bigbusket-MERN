@@ -19,7 +19,6 @@ import kotak from "../../image/bank/kotak.jpg"
 import { Box, grid } from "@mui/system"
 import { Grid } from "@mui/material"
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2"
-import Navbaar from "../header/Navbaar"
 import Footer from "../footer/Footer"
 import SixItemBar from "./SixItemBar"
 import BannerSlid from "./BannerSlid"
@@ -29,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { fetchProductData } from "../../redux_toolkit/slices/getProduvtSlices"
 import { useFetch } from "../../survices/getapi"
+import Lodar from "../lodar/Lodar"
 
 
 const Beauty = ["https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b54a-a93c998e0d20/eed60a97-9621-4c4e-8f87-6053da9b7a72/19d8368c-64c9-422f-96fd-2b88fb5fec13/hp_beauty-makeup-splash_m_250223_01.jpg",
@@ -40,11 +40,12 @@ const Beauty = ["https://www.bigbasket.com/media/customPage/77880b23-0233-4fad-b
 function HomeMain() {
     const [productQty, setProductQty] = useState(1);
     const [basketProductArr, setBasketProductArr] = useState([]);
+    const [isLodar, setIsLodar] = useState(false);
     const ischeck = useSelector((state) => state.functionSlices.isAddProduct);
     const dispatch = useDispatch();
     const token = localStorage.getItem('token');
 
-    const { isLoading, serverError, apiData } = useFetch("/addproduct");
+    const { isLoading, serverError, apiData } = useFetch("http://localhost:8000/addproduct");
 
     let newProductData = [];
     if (apiData) {
@@ -54,20 +55,26 @@ function HomeMain() {
 
     useEffect(() => {
         const fetchFun = async () => {
-            const response = await fetch("/basket", {
+            //console.log("tu");
+            //setIsLodar(true);
+            const response = await fetch("http://localhost:8000/basket", {
                 method: "GET",
                 headers: { Authorization: localStorage.getItem("token") }
             });
             if (response.statusText === "Unauthorized") {
 
                 //navigate("./");
-                return;
+                //return;
             } else {
                 const data = await response.json();
-                setBasketProductArr([...data])
+                //console.log(data);
+                setBasketProductArr(data)
             }
+            //setIsLodar(false);
         }
-        fetchFun();
+        //if (ischeck) {
+            fetchFun();
+       // }
     }, [ischeck])
 
     // const dispatch = useDispatch();
@@ -78,10 +85,12 @@ function HomeMain() {
     //cart product present or not
     //-----------------------------------------------------------------
     const findCartProduct = (product) => {
-        return basketProductArr.find((ele) => ele._id === product._id);
+        return basketProductArr.find((ele) => ele._id === product._id); 
     }
-
-
+    //console.log(basketProductArr);
+    // if(isLodar){
+    //     return (<Lodar />);
+    // }
     return (<>
 
         <img src={topMeetBanner} alt="meet Offer" id="topMeetBaner" />

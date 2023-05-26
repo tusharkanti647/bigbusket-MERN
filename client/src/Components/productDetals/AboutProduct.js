@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { isAddProductReducer } from "../../redux_toolkit/slices/functionSlices";
+import Lodar from "../lodar/Lodar";
 
 
 
@@ -26,6 +27,8 @@ function AboutProduct() {
     const [productQty, setProductQty] = useState(1);
     const [basketProductArr, setBasketProductArr] = useState([]);
     const [basketOneProduct, setBasketOneProduct] = useState(null);
+    const [isLodar, setIsLodar] = useState(false);
+    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
     const ischeck = useSelector((state) => state.functionSlices.isAddProduct);
     const dispatch = useDispatch();
 
@@ -38,18 +41,19 @@ function AboutProduct() {
     //----------------------------------------------------------------------------------------
     useEffect(() => {
         const fetchFun = async () => {
-            const response = await fetch("/basket", {
+            //setIsLodar(true)
+            const response = await fetch("http://localhost:8000/basket", {
                 method: "GET",
                 headers: { Authorization: localStorage.getItem("token") }
             });
             if (response.statusText === "Unauthorized") {
 
-                //navigate("./");
-                //return;
+                
             } else {
                 const data = await response.json();
                 setBasketProductArr([...data])
             }
+            //setIsLodar(false);
         }
         fetchFun();
     }, [ischeck])
@@ -59,10 +63,13 @@ function AboutProduct() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`/addproduct/${id}`);
+                setIsLodar(true);
+                const response = await fetch(`http://localhost:8000/addproduct/${id}`);
                 const data = await response.json();
                 setOneProductData({ ...data });
+                setIsLodar(false);
             } catch (error) {
+            setIsLodar(false);
                 console.log(error);
             }
         }
@@ -85,14 +92,18 @@ function AboutProduct() {
     useEffect(() => {
         //console.log(product.titel);
         const hndelProductQuantity = async () => {
-            const response = await fetch("/basket-product/quantity-update", {
+            //setIsLodar(true);
+            setIsBtnDisabled(true);
+            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": localStorage.getItem("token"),
                 },
                 body: JSON.stringify({ qty: productQty, titel: basketOneProduct.titel })
-            })
+            });
+            //setIsLodar(false);
+            setIsBtnDisabled(false);
         }
         if (basketOneProduct) {
             hndelProductQuantity();
@@ -102,7 +113,8 @@ function AboutProduct() {
     //product update 
     //------------------------------------------------------------------------------------
     const basketUpdate = async () => {
-        const response = await fetch("/basket/" + id, {
+        setIsLodar(true);
+        const response = await fetch("http://localhost:8000/basket/" + id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -111,16 +123,21 @@ function AboutProduct() {
             body: JSON.stringify({ qty: productQty })
         });
         if (response.statusText === "Unauthorized") {
+            //setIsLodar(false);
             //dispatch(addToBasket({ ...product, qty: productQty }));
             alert("please log in first");
         }
+        if(response.statusText !== "Unauthorized"){
+            dispatch(isAddProductReducer(true));
+        }
+        setIsLodar(false);
     }
 
     //add product in basket
     //-------------------------------------------------------------------------
     const handelAdd = () => {
         basketUpdate();
-        dispatch(isAddProductReducer(true));
+        //dispatch(isAddProductReducer(true));
     }
 
     //handel the input
@@ -134,6 +151,7 @@ function AboutProduct() {
     let off = 0;
     if (oneProductData.price) {
         off = ((oneProductData.originalPrice - oneProductData.discountPrice) / oneProductData.originalPrice) * 100;
+        off=off.toFixed(2);
     }
 
     //  console.log(oneProductData.about.weight[1])
@@ -143,6 +161,13 @@ function AboutProduct() {
     // if(oneProductData.price){
     // oneProductData.price && console.log(oneProductData.about.weight[1]);
     // }
+
+
+    if(isLodar){
+        return(
+            <Lodar />
+        )
+    }
     return (
 
         <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "center" }} className="About-product-main">
@@ -201,9 +226,9 @@ function AboutProduct() {
                             {basketOneProduct ? (<div className="aboutProduct-button-wrapper">
 
                                 <div className="item-count">
-                                    <button onClick={() => setProductQty(productQty - 1)}><RemoveIcon /></button>
+                                    <button disabled={isBtnDisabled} onClick={() => setProductQty(productQty - 1)}><RemoveIcon /></button>
                                     <div id="quantity_input_box">{productQty}</div>
-                                    <button onClick={() => setProductQty(productQty + 1)}><AddIcon /></button>
+                                    <button disabled={isBtnDisabled} onClick={() => setProductQty(productQty + 1)}><AddIcon /></button>
                                 </div>
                                 <button className="aboutProduct-save-button">SAVE</button>
                             </div>) :

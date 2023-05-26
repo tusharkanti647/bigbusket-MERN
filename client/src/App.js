@@ -1,7 +1,5 @@
 
 import Footer from './Components/footer/Footer';
-
-import Navbaar from './Components/header/Navbaar';
 import HomeMain from './Components/home/HomeMain';
 
 import { Routes, Route } from "react-router-dom";

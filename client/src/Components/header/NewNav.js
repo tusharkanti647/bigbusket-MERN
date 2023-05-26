@@ -10,11 +10,14 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { basketProductCount, searchNameReducer, isAddProductReducer } from "../../redux_toolkit/slices/functionSlices";
+import Lodar from "../lodar/Lodar";
 
 
 function NewNav() {
   const [badgeCount, setBadgeCount] = useState(0);
   const [searchInputValue, setSearchInputValue] = useState("");
+  const [isLodar, setIsLodar] = useState(false);
+  const [isLogIn, setIsLogIn] = useState(false);
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const ischeck = useSelector((state) => state.functionSlices.isAddProduct);
@@ -37,7 +40,8 @@ function NewNav() {
   //fetch badge count
   //-------------------------------------------------------------------------
   const fetchBadge = async () => {
-    const response = await fetch("/basket_badge/count", {
+    //setIsLodar(true);
+    const response = await fetch("http://localhost:8000/basket_badge/count", {
       method: "GET",
       headers: {
         Authorization: token,
@@ -47,7 +51,9 @@ function NewNav() {
       const data = await response.json();
       dispatch(isAddProductReducer(false));
       setBadgeCount(data.badgeContent);
+      setIsLogIn(true);
     }
+    //setIsLodar(false);
   }
 
   useEffect(() => {
@@ -55,6 +61,11 @@ function NewNav() {
   }, [ischeck]);
 
 
+  // if(isLodar){
+  //   return (
+  //     <Lodar />
+  //   )
+  // }
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -99,7 +110,7 @@ function NewNav() {
 
           <div className="right">
 
-            <Menu badgeCount={badgeCount} />
+            <Menu isLogIn={isLogIn}  />
 
             <Link to="/basket" >
               <IconButton

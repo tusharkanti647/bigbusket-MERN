@@ -8,10 +8,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { isAddProductReducer } from "../../redux_toolkit/slices/functionSlices";
+import Lodar from "../lodar/Lodar";
 
 
 function ItemList({ product, setBasketProductArr }) {
     const [itemNumber, setItemNumber] = useState(product.qty);
+    const [isLodar, setIsLodar] = useState(false);
+    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
     const dispatch = useDispatch();
 
     //product Quantity updte
@@ -19,14 +22,18 @@ function ItemList({ product, setBasketProductArr }) {
     useEffect(() => {
         //console.log(product.titel);
         const hndelProductQuantity = async () => {
-            const response = await fetch("/basket-product/quantity-update", {
+            //setIsLodar(true);
+            setIsBtnDisabled(true);
+            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": localStorage.getItem("token"),
                 },
                 body: JSON.stringify({ qty: itemNumber, titel: product.titel })
-            })
+            });
+            //setIsLodar(false);
+            setIsBtnDisabled(false);
         }
         hndelProductQuantity();
     }, [itemNumber]);
@@ -35,7 +42,8 @@ function ItemList({ product, setBasketProductArr }) {
     //remove 1 product from basket
     //-----------------------------------------------------------------------------------------
     const remove1Product = async () => {
-        const response = await fetch("/remove-product", {
+        setIsLodar(true);
+        const response = await fetch("http://localhost:8000/remove-product", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -52,9 +60,15 @@ function ItemList({ product, setBasketProductArr }) {
             setBasketProductArr(data);
             dispatch((isAddProductReducer(true)))
         }
+        setIsLodar(false);
     }
 
 
+if(isLodar){
+    return(
+        <Lodar />
+    )
+}
 
     return (<>
         <Box className="cart-table-body">
@@ -74,9 +88,9 @@ function ItemList({ product, setBasketProductArr }) {
                 </div>
 
                 <div className="item-count">
-                    <button onClick={() => setItemNumber(itemNumber - 1)}><RemoveIcon /></button>
+                    <button disabled={isBtnDisabled} onClick={() => setItemNumber(itemNumber - 1)}><RemoveIcon /></button>
                     <div id="quantity_input_box">{itemNumber}</div>
-                    <button onClick={() => setItemNumber(itemNumber + 1)}><AddIcon /></button>
+                    <button disabled={isBtnDisabled} onClick={() => setItemNumber(itemNumber + 1)}><AddIcon /></button>
                 </div>
 
                 <div>

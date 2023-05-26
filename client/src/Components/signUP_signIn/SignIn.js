@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Lodar from "../lodar/Lodar";
 
 const style = {
     // as 'absolute',
@@ -28,6 +29,7 @@ const style = {
 export default function SignIn() {
     const [open, setOpen] = useState(false);
     const [cookieValue, setCookieValue] = useState('');
+    const [isLodar, setIsLodar] = useState(false);
     const [signInData, setSignInData] = useState({
         password: "",
         email: ""
@@ -57,10 +59,11 @@ export default function SignIn() {
     //-------------------------------------------------------------------------
     const signinUser = async (event) => {
         event.preventDefault();
+        setIsLodar(true);
         const { email, password } = signInData;
 
 
-        const respons = await fetch("/signin", {
+        const respons = await fetch("http://localhost:8000/signin", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: 'same-origin',
@@ -86,10 +89,15 @@ export default function SignIn() {
                 password: ""
             });
         }
+        setIsLodar(false);
     }
 
     
-
+if(isLodar){
+    return (
+        <Lodar />
+    )
+}
     
 //console.log(cookieValue);
     return (

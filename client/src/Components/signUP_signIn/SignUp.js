@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import SignIn from "./SignIn";
+import Lodar from "../lodar/Lodar";
 
 
 
@@ -11,6 +12,7 @@ import SignIn from "./SignIn";
 
 
 function SignUp() {
+    const [isLodar, setIsLodar] = useState(false);
     const [signUpData, setSignUpData] = useState({
         name: "",
         number: "",
@@ -35,10 +37,11 @@ function SignUp() {
     const signupUser = async (event) => {
         event.preventDefault();
         try {
+            setIsLodar(true);
             const { name, number, email, password, conPassword } = signUpData;
 
             //console.log("hello");
-            const respons = await fetch("/signup", {
+            const respons = await fetch("http://localhost:8000/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, number, email, password, conPassword })
@@ -64,13 +67,20 @@ function SignUp() {
                     password: "",
                     conPassword: ""
                 });
+                setIsLodar(false);
             }
         } catch (e) {
+            setIsLodar(false);
             console.log(e);
         }
     }
 
 
+    if(isLodar) {
+        return(
+            <Lodar />
+        )
+    }
 
     return (<div className='login-modal'>
         <Box

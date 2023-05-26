@@ -6,13 +6,17 @@ import { fetchProductData } from "../../redux_toolkit/slices/getProduvtSlices";
 import { useEffect, useState } from "react";
 import { useFetch } from "../../survices/getapi";
 import "./ProductPage.css";
+import Lodar from "../lodar/Lodar";
 
 
 function ProductPage() {
     const [sortInputValue, setSortInputValue] = useState("");
     const [newProductData, setNewProductData] = useState([]);
+    const [basketProductArr, setBasketProductArr]=useState([]);
+    const [isLodar, setIsLodar] = useState(false);
     const searchName = useSelector((state) => state.functionSlices.searchName);
     let filters = useSelector((state) => state.functionSlices.filterArr);
+    const ischeck = useSelector((state) => state.functionSlices.isAddProduct);
 
     //let { isLoading, serverError, apiData } = useFetch("http://localhost:8000/addproduct");
     //let newProductData = [];
@@ -21,36 +25,38 @@ function ProductPage() {
 
         try {
             const fatchFun = async () => {
-                let uid = "/products-search";
+                //setIsLodar(true);
+                let uid = "http://localhost:8000/products-search";
                 let querySearchString = "";
 
                 querySearchString = searchName ? querySearchString + "searchName=" + searchName : querySearchString;
                 querySearchString = sortInputValue ? (querySearchString ? querySearchString + "&&sortQue=" + sortInputValue : querySearchString + "sortQue=" + sortInputValue) : querySearchString;
                 if (filters) {
-                    
+
 
                     filters = filters.join("+");
-                    
+
                     querySearchString = querySearchString ? querySearchString + "&&filters=" + filters : querySearchString + "filters=" + filters;
-                    
+
                 }
                 //querySearchString=filters ? (querySearchString ? querySearchString + "&&filters=")
-                
+
                 if (querySearchString) {
                     uid = `${uid}?${querySearchString}`;
-                    console.log(uid);
+                    //console.log(uid);
                     const respons = await fetch(uid);
                     const data = await respons.json();
                     //console.log(data.data);
                     setNewProductData([...data.data]);
                 } else {
                     //uid = `http://localhost:8000/products-search`;
-                    
+
                     const respons = await fetch(uid);
                     const data = await respons.json();
                     //console.log(data.data);
                     setNewProductData([...data.data]);
                 }
+                //setIsLodar(false);
 
                 // if (sortInputValue) {
                 //     let sortQua = sortInputValue.split(" ").join("+");
@@ -81,6 +87,39 @@ function ProductPage() {
 
     //let newProductData = [];
 
+    useEffect(() => {
+        const fetchFun = async () => {
+            //setIsLodar(true);
+            const response = await fetch("http://localhost:8000/basket", {
+                method: "GET",
+                headers: { Authorization: localStorage.getItem("token") }
+            });
+            if (response.statusText === "Unauthorized") {
+
+                //navigate("./");
+                //return;
+            } else {
+                const data = await response.json();
+                setBasketProductArr([...data])
+            }
+            //setIsLodar(false);
+        }
+        fetchFun();
+    }, [ischeck])
+
+    //cart product present or not
+    //-----------------------------------------------------------------
+    const findCartProduct = (product) => {
+        return basketProductArr.find((ele) => ele._id === product._id);
+    }
+
+
+    // if(isLodar){
+    //     return(
+    //         <Lodar />
+    //     )
+    // }
+
     return (
         <Box className="product-page">
             <Box sx={{ width: "95%", display: "flex", }}>
@@ -106,7 +145,7 @@ function ProductPage() {
 
 
                     <Box className="card-contaner">
-                        {newProductData.map((product, ind) => <ProductCard key={ind} product={product} />)}
+                        {newProductData.map((product, ind) => findCartProduct(product) ? <ProductCard key={ind} basketQty={findCartProduct(product).qty} product={product} /> :<ProductCard key={ind} product={product} />)}
                     </Box>
 
                 </Box>

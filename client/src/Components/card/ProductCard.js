@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { basketProductCount, isAddProductReducer } from "../../redux_toolkit/slices/functionSlices";
+import Lodar from "../lodar/Lodar";
 
 
 
@@ -27,6 +28,8 @@ import { basketProductCount, isAddProductReducer } from "../../redux_toolkit/sli
 function ProductCard({ product, basketQty }) {
     const [productQty, setProductQty] = useState(1);
     const [itemNumber, setItemNumber] = useState(product.qty);
+    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
+    const [isLodar, setIsLodar] = useState(false);
     //const [badgeCount, setBadgeCount] = useState(0);
     //const [isStateChange, setIsStateChange] = useState(false);
     const dispatch = useDispatch();
@@ -42,7 +45,7 @@ function ProductCard({ product, basketQty }) {
     //creat link and product id
     //---------------------------------------------------------------------------------
     const id = product._id;
-    const link = `aboutproduct/${id}`;
+    const link = `/aboutproduct/${id}`;
     const token = localStorage.getItem("token");
     // const productData = useSelector((state) => state.getproduct.entities);
     // let newProductData = [];
@@ -58,8 +61,8 @@ function ProductCard({ product, basketQty }) {
     //------------------------------------------------------------------------------------
     //useEffect(() => {
     const basketUpdate = async () => {
-
-        const response = await fetch("/basket/" + id, {
+        setIsLodar(true);
+        const response = await fetch("http://localhost:8000/basket/" + id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -70,16 +73,13 @@ function ProductCard({ product, basketQty }) {
         });
         if (response.statusText === "Unauthorized") {
             //console.log("hello");
-            dispatch(addToBasket({ ...product, qty: productQty }));
+            //dispatch(addToBasket({ ...product, qty: productQty }));
             alert("please log in first");
         }
-        // else{
-        //     const data =await response.json();
-        //     //console.log(data);
-        //     dispatch(basketProductCount(data.length));
-        // }
-
-
+        if(response.statusText !== "Unauthorized"){
+            dispatch(isAddProductReducer(true));
+        }
+        setIsLodar(false);
     }
     //})
     // useEffect(()=>{
@@ -92,15 +92,17 @@ function ProductCard({ product, basketQty }) {
     //-------------------------------------------------------------------------
     const handelAdd = () => {
         basketUpdate();
-        dispatch(isAddProductReducer(true));
+        
     }
 
     //product Quantity updte
     //--------------------------------------------------------------------------------
     useEffect(() => {
         //console.log(product.titel);
+        setIsBtnDisabled(true);
         const hndelProductQuantity = async () => {
-            const response = await fetch("/basket-product/quantity-update", {
+            //setIsLodar(true);
+            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -108,11 +110,19 @@ function ProductCard({ product, basketQty }) {
                 },
                 body: JSON.stringify({ qty: productQty, titel: product.titel })
             })
+            setIsBtnDisabled(false);
+            //setIsLodar(false);
         }
         hndelProductQuantity();
     }, [productQty]);
 
     //---------------------------------------------------------------------------------
+if(isLodar){
+    return(
+        <Lodar />
+    )
+}
+
     return (
         <>
             <Card className="card">
@@ -156,9 +166,9 @@ function ProductCard({ product, basketQty }) {
                 <CardActions sx={{ pt: "0px", bgcolor: "#F4F3F2" }}>
                     {basketQty ?
                         <div className="item-count">
-                            <button onClick={() => setProductQty(productQty - 1)}><RemoveIcon /></button>
+                            <button disabled={isBtnDisabled} onClick={() => setProductQty(productQty - 1)}><RemoveIcon /></button>
                             <div id="quantity_input_box">{productQty}</div>
-                            <button onClick={() => setProductQty(productQty + 1)}><AddIcon /></button>
+                            <button disabled={isBtnDisabled} onClick={() => setProductQty(productQty + 1)}><AddIcon /></button>
                         </div> :
                         <>
                             <div className="nav_searchbaar">

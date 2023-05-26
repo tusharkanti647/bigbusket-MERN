@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 
-export default function Menu({ badgeCount }) {
+export default function Menu({ isLogIn }) {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -71,7 +71,7 @@ export default function Menu({ badgeCount }) {
                     <Link to="/" onClick={handleClose}>
                         <div>Home</div>
                     </Link>
-                    {badgeCount ? <div onClick={handelSignOut}>SignOut</div> : <SignIn />}
+                    {isLogIn ? <div onClick={handelSignOut}>SignOut</div> : <SignIn />}
                     <div>User</div>
                 </Box>
 

@@ -236,6 +236,7 @@ router.put("/basket/:id", passport.authenticate('jwt', { session: false }), asyn
 //basket get path
 //-----------------------------------------------------------------------------------------------
 router.get("/basket", passport.authenticate('jwt', { session: false }), (req, res) => {
+    //console.log(req.user.cart.length);
     res.send(req.user.cart);
 });
 
@@ -292,7 +293,7 @@ router.put("/remove-product", passport.authenticate('jwt', { session: false }), 
             }, {
                 new: true
             });
-            
+
             res.send(respons.cart)
         }
     } catch (err) {
