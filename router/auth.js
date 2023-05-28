@@ -103,6 +103,7 @@ router.post("/signin", async (req, res) => {
         //     expires: new Date(Date.now() + 2589000),
         //     httpOnly: true
         // });
+        //ooooooo
         res.status(201).json({ user, token: "Bearer " + token });
     } catch (error) {
         res.status(400).json({ error: "invalid crediential pass" });
