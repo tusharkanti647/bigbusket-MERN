@@ -4,11 +4,10 @@ const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
-const path = require("path");
 
 
 dotenv.config({ path: "./config.env" });
-const port = process.env.PORT || 8000;
+const port = process.env.PORT;
 
 require("./connection");
 
@@ -42,13 +41,6 @@ app.use(require("./router/auth"));
 //     res.send("welcome my signUP signUP page");
 // });
 
-//static files
-app.use(express.static(path.join(__dirname, "./client/build")));
-
-app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
-});
-
 app.listen(port, () => {
-  console.log(`connect my backend surver at ${port} port`);
+    console.log(`connect my backend surver at ${port} port`);
 })

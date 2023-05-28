@@ -14,7 +14,7 @@ import Lodar from "../lodar/Lodar";
 function ItemList({ product, setBasketProductArr }) {
     const [itemNumber, setItemNumber] = useState(product.qty);
     const [isLodar, setIsLodar] = useState(false);
-    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
+    const [isBtnDisabled, setIsBtnDisabled] = useState({addBtn:false, removeBtn:false});
     const dispatch = useDispatch();
 
     //product Quantity updte
@@ -23,8 +23,8 @@ function ItemList({ product, setBasketProductArr }) {
         //console.log(product.titel);
         const hndelProductQuantity = async () => {
             //setIsLodar(true);
-            setIsBtnDisabled(true);
-            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
+            setIsBtnDisabled({...isBtnDisabled, addBtn:true, removeBtn:true});
+            const response = await fetch("/basket-product/quantity-update", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -33,7 +33,11 @@ function ItemList({ product, setBasketProductArr }) {
                 body: JSON.stringify({ qty: itemNumber, titel: product.titel })
             });
             //setIsLodar(false);
-            setIsBtnDisabled(false);
+            if(itemNumber>1){
+            setIsBtnDisabled({...isBtnDisabled, addBtn:false, removeBtn:false});
+            }else{
+                setIsBtnDisabled({...isBtnDisabled, addBtn:false, removeBtn:true});
+            }
         }
         hndelProductQuantity();
     }, [itemNumber]);
@@ -43,7 +47,7 @@ function ItemList({ product, setBasketProductArr }) {
     //-----------------------------------------------------------------------------------------
     const remove1Product = async () => {
         setIsLodar(true);
-        const response = await fetch("http://localhost:8000/remove-product", {
+        const response = await fetch("/remove-product", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -88,9 +92,9 @@ if(isLodar){
                 </div>
 
                 <div className="item-count">
-                    <button disabled={isBtnDisabled} onClick={() => setItemNumber(itemNumber - 1)}><RemoveIcon /></button>
+                    <button disabled={isBtnDisabled.removeBtn} onClick={() => setItemNumber(itemNumber - 1)}><RemoveIcon /></button>
                     <div id="quantity_input_box">{itemNumber}</div>
-                    <button disabled={isBtnDisabled} onClick={() => setItemNumber(itemNumber + 1)}><AddIcon /></button>
+                    <button disabled={isBtnDisabled.addBtn} onClick={() => setItemNumber(itemNumber + 1)}><AddIcon /></button>
                 </div>
 
                 <div>

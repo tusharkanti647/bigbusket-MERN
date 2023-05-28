@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
 //const dotenv=require("dotenv");
-//dotenv.config({path:"./config.env"});
+//dotenv.config({path:"./config.env"});"mongodb://127.0.0.1:27017/bigbusket"
 
 const db = process.env.DATABASE;
+//mongoose.connect("mongodb://127.0.0.1:27017/bigbusket")
 mongoose.connect(db)
     //mongoose.connect(db)
     .then(() => {

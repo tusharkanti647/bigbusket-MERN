@@ -106,8 +106,7 @@ router.post("/signin", async (req, res) => {
         res.status(201).json({ user, token: "Bearer " + token });
     } catch (error) {
         res.status(400).json({ error: "invalid crediential pass" });
-        console.log(error);
-        //console.log("error the bhai catch ma for login time" + error.message);
+        console.log("error the bhai catch ma for login time" + error.message);
     }
 });
 
@@ -167,8 +166,18 @@ router.get("/products-search", async (req, res) => {
             .skip(page * limit)
             .limit(limit);
 
-
-        res.status(200).json({ data: data });
+        const data2 = await productModel.find({ titel: { $regex: searchName, $options: "i" } })
+            .where("category")
+            .in(filters)
+            .sort(sortBy)
+            .skip((page + 1) * limit)
+            .limit(limit);
+        let isNextPagePresent = false;
+        if (data2.length>0) {
+            isNextPagePresent = true;
+        }
+        
+        res.status(200).json({ data: data, isNextPagePresent: isNextPagePresent });
     } catch (e) {
         console.log(e);
         res.status(404).json(e);
@@ -237,6 +246,7 @@ router.put("/basket/:id", passport.authenticate('jwt', { session: false }), asyn
 //basket get path
 //-----------------------------------------------------------------------------------------------
 router.get("/basket", passport.authenticate('jwt', { session: false }), (req, res) => {
+    //console.log(req.user.cart.length);
     res.send(req.user.cart);
 });
 
@@ -293,7 +303,7 @@ router.put("/remove-product", passport.authenticate('jwt', { session: false }), 
             }, {
                 new: true
             });
-            
+
             res.send(respons.cart)
         }
     } catch (err) {

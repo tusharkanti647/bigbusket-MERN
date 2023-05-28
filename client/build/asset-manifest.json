@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.c00e812b.css",
-    "main.js": "/static/js/main.fdbbe126.js",
+    "main.css": "/static/css/main.1d73761d.css",
+    "main.js": "/static/js/main.698305a4.js",
     "static/media/protein.webp": "/static/media/protein.7fec885470c2769ab75a.webp",
     "static/media/upTo50.webp": "/static/media/upTo50.eca15a5bbb06e35f7eef.webp",
     "static/media/induslnd.jpg": "/static/media/induslnd.bea3d1033400e03afb80.jpg",
@@ -19,11 +19,11 @@
     "static/media/combo-store.webp": "/static/media/combo-store.4e74c1f04112531db773.webp",
     "static/media/ayurveda.webp": "/static/media/ayurveda.730c0c2d0f8dca43c489.webp",
     "index.html": "/index.html",
-    "main.c00e812b.css.map": "/static/css/main.c00e812b.css.map",
-    "main.fdbbe126.js.map": "/static/js/main.fdbbe126.js.map"
+    "main.1d73761d.css.map": "/static/css/main.1d73761d.css.map",
+    "main.698305a4.js.map": "/static/js/main.698305a4.js.map"
   },
   "entrypoints": [
-    "static/css/main.c00e812b.css",
-    "static/js/main.fdbbe126.js"
+    "static/css/main.1d73761d.css",
+    "static/js/main.698305a4.js"
   ]
 }

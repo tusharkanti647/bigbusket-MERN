@@ -87,8 +87,12 @@ const productSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    price: {
-        type: Array,
+    discountPrice: {
+        type: Number,
+        require: true,
+    },
+    originalPrice: {
+        type: Number,
         require: true,
     },
     rating: {

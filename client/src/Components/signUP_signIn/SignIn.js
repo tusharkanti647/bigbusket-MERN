@@ -9,6 +9,7 @@ import { TextField } from '@mui/material';
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Lodar from "../lodar/Lodar";
+import Tostyfy from "../tostyfy/Tostyfy";
 
 const style = {
     // as 'absolute',
@@ -30,6 +31,7 @@ export default function SignIn() {
     const [open, setOpen] = useState(false);
     const [cookieValue, setCookieValue] = useState('');
     const [isLodar, setIsLodar] = useState(false);
+    const [isShowTostyfy, setShowTostyfy] = useState(false);
     const [signInData, setSignInData] = useState({
         password: "",
         email: ""
@@ -63,7 +65,7 @@ export default function SignIn() {
         const { email, password } = signInData;
 
 
-        const respons = await fetch("http://localhost:8000/signin", {
+        const respons = await fetch("/signin", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: 'same-origin',
@@ -76,6 +78,7 @@ export default function SignIn() {
         if (respons.status === 400 || !signInData) {
             alert("no data");
         } else {
+            //setShowTostyfy(true);
             alert("user sucessfull signin");
             //console.log(data);
             localStorage.setItem("token", data.token);
@@ -90,9 +93,14 @@ export default function SignIn() {
             });
         }
         setIsLodar(false);
+        //setShowTostyfy(false);
     }
 
-    
+//  if(isShowTostyfy){
+//     return (
+//         <Tostyfy />
+//     ) 
+//  }   
 if(isLodar){
     return (
         <Lodar />
@@ -102,6 +110,7 @@ if(isLodar){
 //console.log(cookieValue);
     return (
         <div>
+            
             <Button onClick={handleOpen}>login</Button>
             <Modal
                 open={open}
@@ -124,6 +133,7 @@ if(isLodar){
                         noValidate
                         autoComplete="off"
                     >
+                        
                         <div className='login-modal'>
                             <h2>SignIn</h2>
                             <TextField
@@ -161,7 +171,10 @@ if(isLodar){
                     {/* <SignUP handleClos={handleClose}/> */}
 
                 </Box>
+
+                
             </Modal>
+            {/* {isShowTostyfy?<Tostyfy />:""} */}
         </div>
     );
 }

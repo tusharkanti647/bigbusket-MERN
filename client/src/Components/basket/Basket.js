@@ -33,33 +33,28 @@ function Basket() {
     //fetch the basket data
     //--------------------------------------------------------------------------------------
     useEffect(() => {
-        //if (basketProductArrReduxToolKit.length < 1) {
-            const fetchFun = async () => {
-                setIsLodar(true);
-                const response = await fetch("http://localhost:8000/basket", {
-                    method: "GET",
-                    headers: { Authorization: localStorage.getItem("token") }
-                });
-                if (response.statusText === "Unauthorized") {
-                    console.log("hello");
-                    navigate("./");
-                    return;
-                } else {
-                    const data = await response.json();
-                    setBasketProductArr([...data])
-                }
-                setIsLodar(false);
+        const fetchFun = async () => {
+            setIsLodar(true);
+            const response = await fetch("/basket", {
+                method: "GET",
+                headers: { Authorization: localStorage.getItem("token") }
+            });
+            if (response.statusText === "Unauthorized") {
+                console.log("hello");
+                navigate("./");
+                return;
+            } else {
+                const data = await response.json();
+                setBasketProductArr([...data])
             }
-            fetchFun();
-
-        // } else {
-        //     setBasketProductArr([...basketProductArrReduxToolKit]);
-        // }
+            setIsLodar(false);
+        }
+        fetchFun();
     }, [])
 
 
     //calculate total savings and total prices
-
+    //------------------------------------------------------------------------------
     useEffect(() => {
         let totalPriceArr = 0;
         let totalSavingsArr = 0;
@@ -85,7 +80,7 @@ function Basket() {
     //----------------------------------------------------------------------------------------
     const removeAllItem = async () => {
         setIsLodar(true);
-        const respons =await fetch("http://localhost:8000/empty-basket", {
+        const respons = await fetch("/empty-basket", {
             method: "PUT",
             headers: { "Authorization": localStorage.getItem("token") }
         });
@@ -97,39 +92,24 @@ function Basket() {
 
 
 
+    if (isLodar) {
+        return (
+            <Lodar />
+        )
+    }
 
-    // useEffect(()=>{
-    //     const basketUpdate = async () => {
-    //         basketProductArr.map((oroduct)=>)
-    //         const response = await fetch("http://localhost:8000/basket/:id");
-
-    //     }
-    // })
-
-    // useEffect(() => {
-    //     const getBasketProduct = async () => {
-    //         const response = await fetch("http://localhost:8000/basket", {
-    //             headers: {
-    //                 authorization: localStorage.getItem("token")
-    //             }
-    //         });
-    //         //console.log();
-    //         const data = await response.json();
-    //         console.log(data);
-    //         // setCartItems(data);
-    //         // setTotalPrice(data.reduce((a, b) => a + b.price * b.quantity, 0));
-    //         // setTotalQuantity(data.reduce((a, b) => a + b.quantity, 0));
-    //         // setTotalSubtotal(data.reduce((a, b) => a + b.subtotal, 0));
-    //         // setTotalSavings(data.reduce((a, b) => a + b.savings, 0));
-    //     }
-    //     getBasketProduct();
-    // }, []);
-
-if(isLodar){
-    return(
-        <Lodar />
-    )
-}
+    if (basketProductArr.length <= 0) {
+        return (
+            <Box className="cart-buttom-part-botton-wrapper">
+                <h2>OOPS......</h2>
+                <h3>Your Basket is empty.</h3>
+                <h3>Please continue to shopping.</h3>
+                <Link to="/products">
+                    <Button sx={{ border: "solid 1px black" }}>CONTINUE SHOPPING</Button>
+                </Link>
+            </Box>
+        )
+    }
 
     return (<Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
         <Box className="your-item">

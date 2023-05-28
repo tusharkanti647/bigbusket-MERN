@@ -1,26 +1,45 @@
-import { useState } from "react";
+import { memo, useEffect, useState } from "react";
 import "./Sidebar.css";
 import { Box, createTheme, Grid } from '@mui/material';
 import { useDispatch } from "react-redux";
 import { filterArrReducer } from "../../../redux_toolkit/slices/functionSlices";
 
 function Sidebar() {
-    const [filterDataArr, setFilterDataArr] =useState ([{ name: "fish", isChecked: false }, { name: "borges", isChecked: false }, { name: "fresho", isChecked: false }, { name: "Dhara", isChecked: false }]);
-    //const [filterArr, setFilterArr] = useState([]);
-const dispatch=useDispatch();
+    const [filterDataArr, setFilterDataArr] = useState([{ name: "fish", isChecked: false }, { name: "borges", isChecked: false }, { name: "fresho", isChecked: false }, { name: "Dhara", isChecked: false }]);
+    //const [filterArr, setFilterArr] = useState([]); 
+    const dispatch = useDispatch();
 
-    //console.log(inp);
+// useEffect(()=>{
+//     if(filterss.length > 0) {
+//         setFilterDataArr(filterss)
+//     }
+//},[filterss])
+    
+    //console.log(inp); ele.name === name ? { ...ele, isChecked: true, r:"r" } : ele
     const handelChekBox = (event) => {
         const { checked, name } = event.target;
-        console.log({ name, checked });
-        let newArr = filterDataArr.map((ele) => ele.name === name ? { ...ele, isChecked: checked } : ele);
-        let arr = newArr.filter((ele) => ele.isChecked === true).map((ele) => ele.name);
+        //console.log(name);
+        console.log(filterDataArr);
+        let newArr = filterDataArr.map((ele) => ele.name === name ? { ...ele, isChecked: checked } : ele)
+            // let e={...ele}
+            // if (ele.name === name) {
+            //     //console.log(e);
+            //     e = { ...ele, isChecked: checked }
+            // }
+            // console.log(e);
+            // return e;
+        //});
+        console.log(newArr);
+       let arr = newArr.filter((ele) => ele.isChecked === true).map((ele) => ele.name);
+
         console.log(arr);
-        setFilterDataArr(newArr);
-        //setFilterArr(arr);
+        setFilterDataArr([...newArr]);
+        //setFilters(arr);
+        //dispatch(isAddProductReducer(true));
         dispatch(filterArrReducer(arr));
+        
     }
-    
+    console.log(filterDataArr);
 
 
     return (
@@ -31,7 +50,7 @@ const dispatch=useDispatch();
                     {filterDataArr.map((ele) => (
                         <>
                             <label className="label">
-                                <input type="checkbox" name={ele.name} value={ele.name} onChange={handelChekBox} /> {ele.name}
+                                <input type="checkbox" name={ele.name} checked={filterDataArr.isChecked} value={ele.name} onChange={handelChekBox} /> {ele.name}
                             </label><br />
                         </>
                     ))}
@@ -90,4 +109,4 @@ const dispatch=useDispatch();
     )
 }
 
-export default Sidebar;
+export default memo(Sidebar);

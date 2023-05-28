@@ -28,7 +28,7 @@ import Lodar from "../lodar/Lodar";
 function ProductCard({ product, basketQty }) {
     const [productQty, setProductQty] = useState(1);
     const [itemNumber, setItemNumber] = useState(product.qty);
-    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
+    const [isBtnDisabled, setIsBtnDisabled] = useState({addBtn: false, removeBtn: false});
     const [isLodar, setIsLodar] = useState(false);
     //const [badgeCount, setBadgeCount] = useState(0);
     //const [isStateChange, setIsStateChange] = useState(false);
@@ -62,7 +62,7 @@ function ProductCard({ product, basketQty }) {
     //useEffect(() => {
     const basketUpdate = async () => {
         setIsLodar(true);
-        const response = await fetch("http://localhost:8000/basket/" + id, {
+        const response = await fetch("/basket/" + id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -99,10 +99,10 @@ function ProductCard({ product, basketQty }) {
     //--------------------------------------------------------------------------------
     useEffect(() => {
         //console.log(product.titel);
-        setIsBtnDisabled(true);
+        setIsBtnDisabled({...isBtnDisabled, addBtn: true, removeBtn: true});
         const hndelProductQuantity = async () => {
             //setIsLodar(true);
-            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
+            const response = await fetch("/basket-product/quantity-update", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -110,7 +110,11 @@ function ProductCard({ product, basketQty }) {
                 },
                 body: JSON.stringify({ qty: productQty, titel: product.titel })
             })
-            setIsBtnDisabled(false);
+           if( productQty>1){
+            setIsBtnDisabled({...isBtnDisabled, addBtn: false, removeBtn: false});
+           }else{
+            setIsBtnDisabled({...isBtnDisabled, addBtn: false, removeBtn: true});
+           }
             //setIsLodar(false);
         }
         hndelProductQuantity();
@@ -166,9 +170,9 @@ if(isLodar){
                 <CardActions sx={{ pt: "0px", bgcolor: "#F4F3F2" }}>
                     {basketQty ?
                         <div className="item-count">
-                            <button disabled={isBtnDisabled} onClick={() => setProductQty(productQty - 1)}><RemoveIcon /></button>
+                            <button disabled={isBtnDisabled.removeBtn} onClick={() => setProductQty(productQty - 1)}><RemoveIcon /></button>
                             <div id="quantity_input_box">{productQty}</div>
-                            <button disabled={isBtnDisabled} onClick={() => setProductQty(productQty + 1)}><AddIcon /></button>
+                            <button disabled={isBtnDisabled.addBtn} onClick={() => setProductQty(productQty + 1)}><AddIcon /></button>
                         </div> :
                         <>
                             <div className="nav_searchbaar">

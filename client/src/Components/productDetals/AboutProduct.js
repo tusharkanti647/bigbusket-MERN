@@ -28,7 +28,7 @@ function AboutProduct() {
     const [basketProductArr, setBasketProductArr] = useState([]);
     const [basketOneProduct, setBasketOneProduct] = useState(null);
     const [isLodar, setIsLodar] = useState(false);
-    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
+    const [isBtnDisabled, setIsBtnDisabled] = useState({addBtn: false, removeBtn: false});
     const ischeck = useSelector((state) => state.functionSlices.isAddProduct);
     const dispatch = useDispatch();
 
@@ -42,7 +42,7 @@ function AboutProduct() {
     useEffect(() => {
         const fetchFun = async () => {
             //setIsLodar(true)
-            const response = await fetch("http://localhost:8000/basket", {
+            const response = await fetch("/basket", {
                 method: "GET",
                 headers: { Authorization: localStorage.getItem("token") }
             });
@@ -64,7 +64,7 @@ function AboutProduct() {
         const fetchData = async () => {
             try {
                 setIsLodar(true);
-                const response = await fetch(`http://localhost:8000/addproduct/${id}`);
+                const response = await fetch(`/addproduct/${id}`);
                 const data = await response.json();
                 setOneProductData({ ...data });
                 setIsLodar(false);
@@ -93,8 +93,8 @@ function AboutProduct() {
         //console.log(product.titel);
         const hndelProductQuantity = async () => {
             //setIsLodar(true);
-            setIsBtnDisabled(true);
-            const response = await fetch("http://localhost:8000/basket-product/quantity-update", {
+            setIsBtnDisabled({...isBtnDisabled, addBtn:true, removeBtn:true});
+            const response = await fetch("/basket-product/quantity-update", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -103,7 +103,11 @@ function AboutProduct() {
                 body: JSON.stringify({ qty: productQty, titel: basketOneProduct.titel })
             });
             //setIsLodar(false);
-            setIsBtnDisabled(false);
+            if(productQty>1){
+            setIsBtnDisabled({...isBtnDisabled, addBtn:false, removeBtn:false});
+            }else{
+                setIsBtnDisabled({...isBtnDisabled, addBtn:false, removeBtn:true});
+            }
         }
         if (basketOneProduct) {
             hndelProductQuantity();
@@ -114,7 +118,7 @@ function AboutProduct() {
     //------------------------------------------------------------------------------------
     const basketUpdate = async () => {
         setIsLodar(true);
-        const response = await fetch("http://localhost:8000/basket/" + id, {
+        const response = await fetch("/basket/" + id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -226,9 +230,9 @@ function AboutProduct() {
                             {basketOneProduct ? (<div className="aboutProduct-button-wrapper">
 
                                 <div className="item-count">
-                                    <button disabled={isBtnDisabled} onClick={() => setProductQty(productQty - 1)}><RemoveIcon /></button>
+                                    <button disabled={isBtnDisabled.removeBtn} onClick={() => setProductQty(productQty - 1)}><RemoveIcon /></button>
                                     <div id="quantity_input_box">{productQty}</div>
-                                    <button disabled={isBtnDisabled} onClick={() => setProductQty(productQty + 1)}><AddIcon /></button>
+                                    <button disabled={isBtnDisabled.addBtn} onClick={() => setProductQty(productQty + 1)}><AddIcon /></button>
                                 </div>
                                 <button className="aboutProduct-save-button">SAVE</button>
                             </div>) :

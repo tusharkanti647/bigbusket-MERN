@@ -8,6 +8,7 @@ import AboutProduct from './Components/productDetals/AboutProduct';
 import Basket from './Components/basket/Basket';
 import ProductPage from './Components/products/ProductPage';
 import NewNav from './Components/header/NewNav';
+import MainProductPage from './Components/products/allProducts/MainProductPage';
 
 const style = {
 
@@ -28,7 +29,8 @@ function App() {
       <Route path='/signup' element={<SignUp />}></Route>
       <Route path='/aboutproduct/:id' element={<AboutProduct />}></Route>
       <Route path="/basket" element={<Basket />}></Route>
-      <Route path='/products' element={<ProductPage />}></Route>
+      {/* <Route path='/products' element={<ProductPage />}></Route> */}
+      <Route path='/products' element={<MainProductPage />}></Route>
     </Routes>
       
     <Footer />

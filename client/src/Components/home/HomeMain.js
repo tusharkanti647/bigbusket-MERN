@@ -45,7 +45,7 @@ function HomeMain() {
     const dispatch = useDispatch();
     const token = localStorage.getItem('token');
 
-    const { isLoading, serverError, apiData } = useFetch("http://localhost:8000/addproduct");
+    const { isLoading, serverError, apiData } = useFetch("/addproduct");
 
     let newProductData = [];
     if (apiData) {
@@ -57,7 +57,7 @@ function HomeMain() {
         const fetchFun = async () => {
             //console.log("tu");
             //setIsLodar(true);
-            const response = await fetch("http://localhost:8000/basket", {
+            const response = await fetch("/basket", {
                 method: "GET",
                 headers: { Authorization: localStorage.getItem("token") }
             });

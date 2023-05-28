@@ -166,8 +166,18 @@ router.get("/products-search", async (req, res) => {
             .skip(page * limit)
             .limit(limit);
 
-
-        res.status(200).json({ data: data });
+        const data2 = await productModel.find({ titel: { $regex: searchName, $options: "i" } })
+            .where("category")
+            .in(filters)
+            .sort(sortBy)
+            .skip((page + 1) * limit)
+            .limit(limit);
+        let isNextPagePresent = false;
+        if (data2.length>0) {
+            isNextPagePresent = true;
+        }
+        
+        res.status(200).json({ data: data, isNextPagePresent: isNextPagePresent });
     } catch (e) {
         console.log(e);
         res.status(404).json(e);
